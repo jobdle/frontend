@@ -416,12 +416,12 @@ const ChatPage: NextPage = () => {
                           {message.content}
                         </span>
                       )}
-                      {message.content_type === "work" &&
+                      {/* {message.content_type === "work" &&
                         handleWorkMessage(message.content).then((jobOject) => (
                           <div>{jobOject.title}</div>
                         ))
-                        // <div>WORK!</div>
-                      }
+                        <div>WORK!</div>
+                      } */}
                     </div>
                   </div>
                 </div>
