@@ -416,12 +416,25 @@ const ChatPage: NextPage = () => {
                           {message.content}
                         </span>
                       )}
-                      {/* {message.content_type === "work" &&
-                        handleWorkMessage(message.content).then((jobOject) => (
-                          <div>{jobOject.title}</div>
-                        ))
-                        <div>WORK!</div>
-                      } */}
+                      {message.content_type === "work" && (
+                        <div
+                          className={`${
+                            userData?._id === message.senderId
+                              ? "bg-sky-500 text-white"
+                              : "bg-gray-300 text-gray-600"
+                          } px-4 py-2 rounded-lg flex space-x-2 items-center`}
+                        >
+                          <p>Your job was updated</p>
+                          <button
+                            onClick={() => {
+                              router.push(`/job/details/${message.content}`);
+                            }}
+                            className="bg-white text-sky-500 p-2 rounded-md"
+                          >
+                            Details
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
