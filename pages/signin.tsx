@@ -62,7 +62,7 @@ const SignInPage: SignInPageWithNoLayout = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
-          alert("Your password is wrong");
+          alert("Your Email or password is wrong");
           setValue("password", "");
         } else {
           alert("Error bewteen client and server!");

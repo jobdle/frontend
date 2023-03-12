@@ -60,11 +60,11 @@ const Sidebar: NextPage = () => {
       link: "/employee",
       icon: <UserIcon className="w-5 d-5" />,
     },
-    // {
-    //   title: "Schedule",
-    //   link: "/schedule",
-    //   icon: <CalendarDaysIcon className="w-5 d-5" />,
-    // },
+    {
+      title: "Schedule",
+      link: "/schedule",
+      icon: <CalendarDaysIcon className="w-5 d-5" />,
+    },
     {
       title: "Settings",
       link: "/settings",

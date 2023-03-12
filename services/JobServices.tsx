@@ -41,7 +41,7 @@ export const getAllAccomplishedJobs = async (
 };
 
 export const getUserJobs = async (
-  status:  string[] | undefined,
+  status: string[] | undefined,
   page: number = 0,
   token: string
 ) => {
@@ -126,5 +126,16 @@ export const manageJob = async (
     }
   );
   console.log("postJob", response);
+  return response;
+};
+
+export const getJobForCalendar = async (token: string) => {
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/work/calendar`,
+    {
+      headers: headersParams(token),
+    }
+  );
+  console.log("getJobForCalendar", response);
   return response;
 };

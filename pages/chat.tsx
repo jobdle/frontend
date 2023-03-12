@@ -15,8 +15,10 @@ import LoadingComponent from "../components/LoadingComponent";
 import SidebarChatAdmin from "../components/SidebarChatAdmin";
 
 import { useUser } from "../contexts/User";
-import { getJob } from "../services/JobServices";
+import { getJob, getUserJobs } from "../services/JobServices";
 import { dateFormat, handleUpload } from "../services/UtilsServices";
+// import { SocketProvider, useSocket } from "../contexts/Socket";
+// import { useSocket } from "../hooks/useSocket";
 
 const ChatPage: NextPage = () => {
   const [search, setSearch] = useState("");
@@ -26,6 +28,7 @@ const ChatPage: NextPage = () => {
   const refMessages = useRef<any[]>([]);
   const router = useRouter();
   // const { userData } = useUser();
+  // const { isReRenderSidebar, setIsReRenderSidebar } = useSocket();
 
   const [chatRoomsObjectsArray, setChatRoomsObjectsArray] = useState<any[]>([]);
   const [senderId, setSenderId] = useState();
@@ -39,7 +42,6 @@ const ChatPage: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<User>();
   const [isReRenderSidebar, setIsReRenderSidebar] = useState(false);
-  const [fileImage, setFileImage] = useState<File>();
 
   const getRoom = async (token: string) => {
     try {
@@ -82,14 +84,6 @@ const ChatPage: NextPage = () => {
     }
   };
 
-  const reRenderSideBar = async () => {
-    if (isReRenderSidebar && userData?.role === "admin") {
-      let chatRoomsObjectsArray = await getRoom(cookies.token);
-      setChatRoomsObjectsArray(chatRoomsObjectsArray);
-      setIsReRenderSidebar(false);
-    }
-  };
-
   const init = async () => {
     setIsLoading(true);
     let chatRoomsObjectsArray = await getRoom(cookies.token);
@@ -103,7 +97,7 @@ const ChatPage: NextPage = () => {
 
     setSenderId(userData._id);
 
-    if (chatRoomsObjectsArray.length == 0) return;
+    if (chatRoomsObjectsArray.length === 0) return;
 
     if (userData !== undefined && chatRoomsObjectsArray !== undefined) {
       if (userData.role === "user") {
@@ -133,6 +127,11 @@ const ChatPage: NextPage = () => {
     setIsLoading(false);
   };
 
+    // for getChatRooms
+    useEffect(() => {
+      init();
+    }, [roomId]);
+
   const fetchData = async () => {
     try {
       const { data } = await getUserJobs(["new", "pending"], 1, cookies.token);
@@ -143,19 +142,10 @@ const ChatPage: NextPage = () => {
     }
   };
 
-  useEffect(() => {
-    reRenderSideBar();
-  }, [chatRoomsObjectsArray]);
-
   // for getUserJobs
   useEffect(() => {
     fetchData();
   }, []);
-
-  // for getChatRooms
-  useEffect(() => {
-    init();
-  }, [roomId]);
 
   useEffect(() => {
     refMessages.current = messageList;
@@ -192,6 +182,7 @@ const ChatPage: NextPage = () => {
       });
       // console.log("messageList", messageList);
     }
+    console.log(socket);
   }, [socket]);
 
   // for change chat room
@@ -268,43 +259,52 @@ const ChatPage: NextPage = () => {
       .catch((error) => console.error(error));
   };
 
-  const handleWorkMessage = async (id: string) => {
-    if (!id) return;
-    const response = await getJob(id, cookies.token);
-    // console.log("response", response);
-    return response.data;
-  };
+  // const handleWorkMessage = async (id: string) => {
+  //   if (!id) return;
+  //   const response = await getJob(id, cookies.token);
+  //   // console.log("response", response);
+  //   return response.data;
+  // };
 
   if (!userData) return null;
   if (!userJobsArray) return null;
 
   return (
-    <div className="w-full h-[90vh] max-h-[90vh] md:h-full flex flex-col md:flex md:flex-row rounded overflow-hidden shadow">
-      {/* Chat channel part  */}
-      <div className="flex flex-col w-full h-full md:w-3/12">
-        <div className="w-full h-14 p-5 border-b flex justify-center items-center bg-sky-500">
-          <p className="font-bold flex justify-center text-white">
-            {userData.role === "admin" ? "Chat" : "Your jobs"}
-          </p>
-        </div>
-        {userData.role === "admin" ? (
-          <div>
-            <span>Search: </span>
-            <input
-              className="w-30"
-              value={search}
-              onChange={(e) => setSearch(e.target.value.trim())}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") setSearch(search);
-              }}
-            />
+    // <SocketProvider>
+      <div className="w-full h-[90vh] max-h-[90vh] md:h-full flex flex-col md:flex md:flex-row rounded overflow-hidden shadow">
+        {/* Chat channel part  */}
+        <div className="flex flex-col w-full h-full md:w-3/12">
+          <div className="w-full h-14 p-5 border-b flex justify-center items-center bg-sky-500">
+            <p className="font-bold flex justify-center text-white">
+              {userData.role === "admin" ? "Chat" : "Your jobs"}
+            </p>
           </div>
-        ) : null}
-        <div className="flex-1 relative">
-          <div className="overflow-auto absolute top-0 bottom-0 left-0 right-0">
-            {userData.role === "admin"
-              ? <SidebarChatAdmin data={data} chatRoomsObjectsArray={chatRoomsObjectsArray} setData={setData} setRoomId={setRoomId} setRoomName={setRoomName}></SidebarChatAdmin>
-              : userJobsArray.map((job: Job, id) => (
+          {userData.role === "admin" ? (
+            <div>
+              <span>Search: </span>
+              <input
+                className="w-30"
+                value={search}
+                onChange={(e) => setSearch(e.target.value.trim())}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setSearch(search);
+                }}
+              />
+            </div>
+          ) : null}
+          <div className="flex-1 relative">
+            <div className="overflow-auto absolute top-0 bottom-0 left-0 right-0">
+              {userData.role === "admin" ? (
+                <SidebarChatAdmin
+                  data={data}
+                  chatRoomsObjectsArray={chatRoomsObjectsArray}
+                  setData={setData}
+                  setRoomId={setRoomId}
+                  setRoomName={setRoomName}
+                  // messageList={messageList}
+                ></SidebarChatAdmin>
+              ) : (
+                userJobsArray.map((job: Job, id) => (
                   <div
                     className="bg-white rounded-md px-3 py-2 cursor-pointer hover:shadow-lg m-1"
                     key={id}
@@ -342,96 +342,99 @@ const ChatPage: NextPage = () => {
                       </span>
                     </div>
                   </div>
-                ))}
+                ))
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      {/* Chat Message Content  */}
-      <div className="w-9/12 md:flex flex-col justify-between bg-white border-l border-gray-200 hidden">
-        {/* Chat title */}
-        <div className="w-full h-14 py-5 pl-5 pr-3 border-b flex justify-between items-center relative">
-          <p>{userData.role === "admin" ? roomName : "Admin"}</p>
-          <button className="bg-green-500 p-2 rounded-lg text-white">
-            detail
-          </button>
-        </div>
+        {/* Chat Message Content  */}
+        <div className="w-9/12 md:flex flex-col justify-between bg-white border-l border-gray-200 hidden">
+          {/* Chat title */}
+          <div className="w-full h-14 py-5 pl-5 pr-3 border-b flex justify-between items-center relative">
+            <p>{userData.role === "admin" ? roomName : "Admin"}</p>
+            <button className="bg-green-500 p-2 rounded-lg text-white">
+              detail
+            </button>
+          </div>
 
-        {/* Chat content */}
-        {isLoading ? (
-          <LoadingComponent className="w-28 h-28 border-4 border-gray-100 border-t-sky-500" />
-        ) : (
-          <div
-            id="messages"
-            className="space-y-2 p-3 overflow-y-auto flex-1 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
-            style={{}}
-          >
-            {messageList.map((message, id) => {
-              return (
-                <div className="chat-message" key={id}>
-                  <div
-                    className={`${
-                      userData?._id === message.senderId
-                        ? "items-end justify-end"
-                        : ""
-                    } flex`}
-                  >
+          {/* Chat content */}
+          {isLoading ? (
+            <LoadingComponent className="w-28 h-28 border-4 border-gray-100 border-t-sky-500" />
+          ) : (
+            <div
+              id="messages"
+              className="space-y-2 p-3 overflow-y-auto flex-1 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+              style={{}}
+            >
+              {messageList.map((message, id) => {
+                return (
+                  <div className="chat-message" key={id}>
                     <div
                       className={`${
                         userData?._id === message.senderId
-                          ? "items-end order-1"
-                          : "items-start order-2"
-                      } flex flex-col rounded-lg space-y-2 mx-2 overflow-x-hidden max-w-xs`}
+                          ? "items-end justify-end"
+                          : ""
+                      } flex`}
                     >
-                      {message.content_type === "Image" && (
-                        <div
-                          className="h-80 w-80 bg-red-500 max-w-xs bg-no-repeat bg-cover bg-center"
-                          style={{ backgroundImage: `url(${message.content})` }}
-                        ></div>
-                      )}
-                      {message.content_type === "Text" && (
-                        <span
-                          className={`${
-                            userData?._id === message.senderId
-                              ? "bg-sky-500 text-white"
-                              : "bg-gray-300 text-gray-600"
-                          } px-4 py-2 rounded-lg inline-block`}
-                        >
-                          {message.content}
-                        </span>
-                      )}
-                      {message.content_type === "work" && (
-                        <div
-                          className={`${
-                            userData?._id === message.senderId
-                              ? "bg-sky-500 text-white"
-                              : "bg-gray-300 text-gray-600"
-                          } px-4 py-2 rounded-lg flex space-x-2 items-center`}
-                        >
-                          <p>Your job was updated</p>
-                          <button
-                            onClick={() => {
-                              router.push(`/job/details/${message.content}`);
+                      <div
+                        className={`${
+                          userData?._id === message.senderId
+                            ? "items-end order-1"
+                            : "items-start order-2"
+                        } flex flex-col rounded-lg space-y-2 mx-2 overflow-x-hidden max-w-xs`}
+                      >
+                        {message.content_type === "Image" && (
+                          <div
+                            className="h-80 w-80 bg-red-500 max-w-xs bg-no-repeat bg-cover bg-center"
+                            style={{
+                              backgroundImage: `url(${message.content})`,
                             }}
-                            className="bg-white text-sky-500 p-2 rounded-md"
+                          ></div>
+                        )}
+                        {message.content_type === "Text" && (
+                          <span
+                            className={`${
+                              userData?._id === message.senderId
+                                ? "bg-sky-500 text-white"
+                                : "bg-gray-300 text-gray-600"
+                            } px-4 py-2 rounded-lg inline-block`}
                           >
-                            Details
-                          </button>
-                        </div>
-                      )}
+                            {message.content}
+                          </span>
+                        )}
+                        {message.content_type === "work" && (
+                          <div
+                            className={`${
+                              userData?._id === message.senderId
+                                ? "bg-sky-500 text-white"
+                                : "bg-gray-300 text-gray-600"
+                            } px-4 py-2 rounded-lg flex space-x-2 items-center`}
+                          >
+                            <p>Your job was updated</p>
+                            <button
+                              onClick={() => {
+                                router.push(`/job/details/${message.content}`);
+                              }}
+                              className="bg-white text-sky-500 p-2 rounded-md"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {/* Chat input message */}
-        <div className="flex border-t relative">
-          {/* {fileImage && (
+                );
+              })}
+            </div>
+          )}
+          {/* Chat input message */}
+          <div className="flex border-t relative">
+            {/* {fileImage && (
             <div className="absolute bg-red-500 w-full h-28 -top-28"></div>
           )} */}
-          <form onSubmit={sendMessage} className="flex w-full">
-            {/* <div
+            <form onSubmit={sendMessage} className="flex w-full">
+              {/* <div
               style={{
                 backgroundImage: `url(${
                   fileImage && URL.createObjectURL(fileImage)
@@ -439,33 +442,34 @@ const ChatPage: NextPage = () => {
               }}
               className={`h-60 w-60 bg-gray-100 rounded-full bg-no-repeat bg-cover bg-center flex justify-center items-center`}
             ></div> */}
-            <label
-              className="h-full w-10 cursor-pointer flex justify-center items-center border-r"
-              htmlFor="edit-avatar"
-            >
-              <PhotoIcon className="w-5 h-5" />
+              <label
+                className="h-full w-10 cursor-pointer flex justify-center items-center border-r"
+                htmlFor="edit-avatar"
+              >
+                <PhotoIcon className="w-5 h-5" />
+                <input
+                  type="file"
+                  id="edit-avatar"
+                  className="hidden"
+                  onChange={handleSubmitFile}
+                  accept="image/*"
+                />
+              </label>
               <input
-                type="file"
-                id="edit-avatar"
-                className="hidden"
-                onChange={handleSubmitFile}
-                accept="image/*"
+                className="flex-1 focus:outline-none px-2"
+                type="text"
+                onChange={handleChange}
+                value={message}
+                name="message"
               />
-            </label>
-            <input
-              className="flex-1 focus:outline-none px-2"
-              type="text"
-              onChange={handleChange}
-              value={message}
-              name="message"
-            />
-            <button className="p-2 bg-sky-500 text-white" type="submit">
-              Send
-            </button>
-          </form>
+              <button className="p-2 bg-sky-500 text-white" type="submit">
+                Send
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    // </SocketProvider>
   );
 };
 
