@@ -29,7 +29,7 @@ const VerifyIndexPage = () => {
 
   useEffect(() => {
     if (verify_email_token === undefined) {
-      router.push("/signin");
+      //router.push("/signin"); //ที่เปิดมาผิดหน้ามีปัญหาตรงนี้
       return;
     }
     handleVerify();
