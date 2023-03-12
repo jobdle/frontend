@@ -12,6 +12,7 @@ import React, {
 import { useCookies } from "react-cookie";
 import io, { Socket } from "socket.io-client";
 import LoadingComponent from "../components/LoadingComponent";
+import SidebarChatAdmin from "../components/SidebarChatAdmin";
 
 import { useUser } from "../contexts/User";
 import { getJob } from "../services/JobServices";
@@ -302,25 +303,7 @@ const ChatPage: NextPage = () => {
         <div className="flex-1 relative">
           <div className="overflow-auto absolute top-0 bottom-0 left-0 right-0">
             {userData.role === "admin"
-              ? chatRoomsObjectsArray.map((room, id) => {
-                  return (
-                    <div
-                      className={`${
-                        data.index === id ? "bg-white" : "bg-gray-100"
-                      } p-5 hover:bg-white cursor-pointer border-b border-gray-200`}
-                      onClick={() => {
-                        setData({ ...data, index: id });
-                        setRoomId(room._id);
-                        setRoomName(room.nameOfUser);
-                      }}
-                      key={id}
-                    >
-                      <p className="font-bold">{room.nameOfUser}</p>
-                      {/* <p className="text-gray-500 font-light">{chat.username}</p> */}
-                      {/* <p>{room.messages[0].content}</p> */}
-                    </div>
-                  );
-                })
+              ? <SidebarChatAdmin data={data} chatRoomsObjectsArray={chatRoomsObjectsArray} setData={setData} setRoomId={setRoomId} setRoomName={setRoomName}></SidebarChatAdmin>
               : userJobsArray.map((job: Job, id) => (
                   <div
                     className="bg-white rounded-md px-3 py-2 cursor-pointer hover:shadow-lg m-1"
