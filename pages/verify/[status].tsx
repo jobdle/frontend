@@ -80,7 +80,7 @@ const VerifyPage = () => {
           <div className="bg-white w-8/12 lg:w-4/12 my-20 p-10 rounded-xl border border-transparent">
             <div className="">
               <p className="font-bold text-3xl text-center my-5">
-                Token was expired!
+                Token was problem!
               </p>
 
               <label className="block font-medium text-gray-700 my-1">

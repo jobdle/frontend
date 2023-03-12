@@ -18,20 +18,14 @@ const VerifyIndexPage = () => {
           },
         }
       );
-      alert(response.data.message);
       router.push("/verify/success");
     } catch (error: any) {
-      alert(error.response.data.message);
       console.error(error);
       router.push("/verify/fail");
     }
   };
 
   useEffect(() => {
-    if (verify_email_token === undefined) {
-      //router.push("/signin"); //ที่เปิดมาผิดหน้ามีปัญหาตรงนี้
-      return;
-    }
     handleVerify();
     console.log(verify_email_token);
   }, [verify_email_token]);
