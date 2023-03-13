@@ -87,7 +87,7 @@ const SignInPage: SignInPageWithNoLayout = () => {
           id="logo"
           className="font-bold m-4 absolute inset-0 text-gray-100 h-5"
         >
-          {process.env.NEXT_PUBLIC_APP_NAME || ""}
+          {process.env.NEXT_PUBLIC_APP_NAME}
         </div>
         <div className="bg-white sm:w-8/12 md:w-8/12 lg:w-4/12 my-20 p-10 rounded-xl border border-transparent">
           <p className="font-bold text-3xl text-center my-5">Sign in</p>
