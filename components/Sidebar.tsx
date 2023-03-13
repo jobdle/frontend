@@ -148,7 +148,7 @@ const Sidebar: NextPage = () => {
             } font-bold text-white`}
           >
             <span className="cursor-pointer" onClick={clickOnLogo}>
-              Jobdle
+            {process.env.NEXT_PUBLIC_APP_NAME}
             </span>
           </div>
         </div>

@@ -50,7 +50,7 @@ const VerifyPage = () => {
                 Verify Success
               </p>
               <label className="block font-medium text-gray-700 my-1">
-                Welcome to Jobdle App!
+                Welcome to {process.env.NEXT_PUBLIC_APP_NAME} App!
               </label>
               <label className="block font-medium text-gray-700 my-1">
                 you can login and hire work now.

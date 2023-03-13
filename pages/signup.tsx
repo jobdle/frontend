@@ -82,7 +82,7 @@ const SignUpPage: SignUpPageWithNoLayout = () => {
           id="logo"
           className="font-bold m-4 absolute inset-0 text-gray-100 h-5"
         >
-          Jobdle
+          {process.env.NEXT_PUBLIC_APP_NAME}
         </div>
         <div className="bg-white w-9/12 h-5/6 p-10 rounded-xl border border-transparent">
           <p className="font-bold text-3xl text-center my-5">Sign Up</p>

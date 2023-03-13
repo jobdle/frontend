@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "../../../components/ErrorMessage";
 import { resetPassword } from "../../../services/AccountServices";
 
 
@@ -10,31 +12,28 @@ const defaultValue = {
 
 const RecoverPasswordPage = () => {
   const router = useRouter();
-  const { token } = router.query;
+  const { reset_password_token } = router.query;
+  const {
+    register,
+    unregister,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [inputFields, setInputFleids] = useState(defaultValue);
 
-  const handleChange = (e: any) => {
-    setInputFleids((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    console.log(inputFields.newPassword, inputFields.comfirmNewPassword);
+    console.log(data.newPassword, data.comfirmNewPassword);
 
-    if (
-      inputFields.newPassword === "" ||
-      inputFields.comfirmNewPassword === ""
-    ) {
-      alert("Please type completely!");
-      setInputFleids(defaultValue);
-    } else if (inputFields.newPassword === inputFields.comfirmNewPassword) {
+    if (data.newPassword === data.comfirmNewPassword) {
       try {
         const response = await resetPassword(
-          inputFields.comfirmNewPassword,
-          token
+          data.comfirmNewPassword,
+          reset_password_token
         );
         console.log(response);
         alert(response.data.message);
@@ -44,12 +43,10 @@ const RecoverPasswordPage = () => {
       }
     } else {
       alert("Password doesn't match!");
-      setInputFleids(defaultValue);
+      reset();
     }
     setIsLoading(false);
-  };
-
-  useEffect(() => {}, [token]);
+  });
 
   return (
     <>
@@ -59,7 +56,7 @@ const RecoverPasswordPage = () => {
             <p className="text-3xl">Reset Password</p>
           </div>
           <div className="my-5">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={onSubmit}>
               <label>
                 New Password
                 <span className="text-gray-400"> (At least 8 characters)</span>
@@ -67,10 +64,15 @@ const RecoverPasswordPage = () => {
                   type="password"
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                   placeholder="New Password"
-                  onChange={handleChange}
-                  name="newPassword"
-                  value={inputFields.newPassword}
+                  {...register("newPassword", {
+                    required: "This is required.",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters.",
+                    },
+                  })}
                 />
+                <ErrorMessage>{errors.newPassword?.message}</ErrorMessage>
               </label>
               <label>
                 Comfirm new password
@@ -78,9 +80,13 @@ const RecoverPasswordPage = () => {
                   type="password"
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                   placeholder="Comfirm new password"
-                  onChange={handleChange}
-                  name="comfirmNewPassword"
-                  value={inputFields.comfirmNewPassword}
+                  {...register("comfirmNewPassword", {
+                    required: "This is required.",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters.",
+                    },
+                  })}
                 />
               </label>
               <div className="flex justify-end my-3">

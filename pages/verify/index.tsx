@@ -10,7 +10,7 @@ const VerifyIndexPage = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/verify`,
-        { verify_email_token },
+        {},
         {
           headers: {
             "Content-Type": "application/json",
