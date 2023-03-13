@@ -7,9 +7,9 @@ const SidebarChatAdmin = ({
   data,
   chatRoomsObjectsArray,
   setData,
+  roomId,
   setRoomId,
   setRoomName,
-  isReRenderSidebar,
 }: any) => {
   const [allChatRooms, setAllChatRooms] = useState<any>([]);
 
@@ -21,20 +21,20 @@ const SidebarChatAdmin = ({
 
   if (!chatRoomsObjectsArray) return null;
 
-  return allChatRooms.map((room: any, id: string) => {
+  return allChatRooms.map((room: any) => {
     return (
       <div
         className={`${
-          data.index === id ? "bg-white" : "bg-gray-200"
+          roomId === room._id ? "bg-white" : "bg-gray-200"
         } p-5 hover:bg-white cursor-pointer my-1 rounded-md`}
         onClick={() => {
-          setData({ ...data, index: id });
+          setData({ ...data, index: roomId });
           setRoomId(room._id);
           setRoomName(room.nameOfUser);
         }}
-        key={id}
+        key={room._id}
       >
-        <p className="font-bold">{room.nameOfUser}</p>
+        <p className="font-bold truncate">{room.nameOfUser}</p>
         {/* <p className="text-gray-500 font-light">{chat.username}</p> */}
         {/* <p>{room.messages[0].content}</p> */}
       </div>

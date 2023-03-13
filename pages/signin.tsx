@@ -131,10 +131,9 @@ const SignInPage: SignInPageWithNoLayout = () => {
               </ButtonComponent>
               <a href={signinWithKasetsart.baseUrl} className="w-full">
                 <ButtonComponent
-                  className="border border-transparent rounded-full bg-green-600 hover:bg-green-500 w-full py-2 px-4 text-sm font-medium text-white"
+                  className="border border-transparent rounded-full bg-green-600 w-full py-2 px-4 text-sm font-medium text-white"
                   type="button"
-                  disabled={isLoading}
-                  isLoading={isLoading}
+                  disabled={true}
                 >
                   Sign up with Kasetsart
                 </ButtonComponent>
