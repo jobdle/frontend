@@ -62,9 +62,11 @@ const RecoverPasswordPage = () => {
             <form onSubmit={handleSubmit}>
               <label>
                 New Password
+                <span className="text-gray-400"> (At least 8 characters)</span>
                 <input
                   type="password"
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                  placeholder="New Password"
                   onChange={handleChange}
                   name="newPassword"
                   value={inputFields.newPassword}
@@ -75,6 +77,7 @@ const RecoverPasswordPage = () => {
                 <input
                   type="password"
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                  placeholder="Comfirm new password"
                   onChange={handleChange}
                   name="comfirmNewPassword"
                   value={inputFields.comfirmNewPassword}
