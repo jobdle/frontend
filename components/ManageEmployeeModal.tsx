@@ -49,12 +49,14 @@ export default function ManageEmployeeModal({
   const fetchData = async () => {
     console.log("query", query);
     const response = await getAllEmployees(cookies.token, query); // error must have query
-    const response2 = await getAllCategories(cookies.token);
-    const allCategoriesOptions = response2.data.map((category: any) => {
-      return { value: category.name, label: category.name };
-    });
     setAllEmployees(response.data);
-    setallCategories(allCategoriesOptions);
+    getAllCategories(cookies.token).then((res) => {
+      const allCategoriesOptions = res.data.map((category: any) => {
+        return { value: category.name, label: category.name };
+      });
+      setallCategories(allCategoriesOptions);
+    });
+    // setallCategories(allCategoriesOptions);
   };
 
   const handleManageEmployees = async () => {
