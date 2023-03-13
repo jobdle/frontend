@@ -12,7 +12,7 @@ interface Props {
   confirmButtonColor: string;
 }
 
-export default function ComfirmModal({
+export default function SuccessJobModal({
   onClose,
   show,
   cancel,

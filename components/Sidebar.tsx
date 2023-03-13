@@ -246,7 +246,7 @@ const Sidebar: NextPage = () => {
         onClose={setShowSignOutMoDal}
         show={showSignOutMoDal}
         cancel={() => setShowSignOutMoDal(false)}
-        confirm={() => router.push("signout")}
+        confirm={() => router.push("/signout")}
       />
     </>
   );
