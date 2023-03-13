@@ -3,8 +3,11 @@ import { useRouter } from "next/router";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
+import ButtonComponent from "../../../components/ButtonComponent";
 
 import Header from "../../../components/Header";
+import ManageEmployeeEditModal from "../../../components/ManageEmployeeEditModal";
+import ManageEmployeeModal from "../../../components/ManageEmployeeModal";
 import { getAllCategories } from "../../../services/CategoryServices";
 import { editJob, getJob } from "../../../services/JobServices";
 import { splitTFromISO } from "../../../services/UtilsServices";
@@ -21,6 +24,7 @@ const defaultValue = {
   location: "",
   deadline: "",
   status: "",
+  employee: [],
 };
 
 const EditDescriptionJobPage: NextPage = () => {
@@ -29,6 +33,8 @@ const EditDescriptionJobPage: NextPage = () => {
   const { id } = router.query;
 
   const [jobDetailsObject, setJobDetailsObject] = useState<JobEditable>();
+  const [employees, setEmployees] = useState([]);
+  const [showManageModal, setShowManageModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -64,15 +70,16 @@ const EditDescriptionJobPage: NextPage = () => {
   const onEditjob = handleSubmit(async (data: JobEditable) => {
     console.log(data);
     if (!id) return;
-    await editJob(id, data, cookies.token);
+    await editJob(id, { ...data, employee: employees }, cookies.token);
     router.push(`/job/details/${id}`);
   });
 
   const fetchData = async () => {
     try {
       if (id) {
-        const { data } = await getJob(id, cookies.token);
-        setJobDetailsObject(data);
+        const response = await getJob(id, cookies.token);
+        setJobDetailsObject(response.data);
+        setEmployees(response.data.employee);
       }
     } catch (error) {
       console.error(error);
@@ -96,6 +103,7 @@ const EditDescriptionJobPage: NextPage = () => {
         deadline: splitTFromISO(jobDetailsObject.deadline),
       });
     }
+    setEmployees(jobDetailsObject?.employee);
   }, [jobDetailsObject]);
 
   if (!jobDetailsObject) return null;
@@ -109,7 +117,7 @@ const EditDescriptionJobPage: NextPage = () => {
     <>
       <Header title="Edit job details" />
 
-      <form onSubmit={onEditjob}>
+      <form id="hook-form" onSubmit={onEditjob}>
         <div className="bg-white p-4 rounded-md space-y-2">
           <div className={BlockFieldStyles}>
             <p className={LabelStyles}>Title </p>
@@ -136,10 +144,12 @@ const EditDescriptionJobPage: NextPage = () => {
           </div>
           <div className={BlockFieldStyles}>
             <p className={LabelStyles}>Category </p>
-            <p>
-              {jobDetailsObject.category.name}{" "}
-              <span className="text-red-500 text-xs">* Can't Change</span>
-            </p>
+            <div className="col-span-4">
+              <p>
+                {jobDetailsObject.category.name}{" "}
+                <span className="text-red-500 text-xs">* Can't Change</span>
+              </p>
+            </div>
           </div>
           <div className={BlockFieldStyles}>
             <p className={LabelStyles}>Location </p>
@@ -163,6 +173,46 @@ const EditDescriptionJobPage: NextPage = () => {
                 required: "This is required.",
               })}
             />
+          </div>
+          <div className={BlockFieldStyles}>
+            <div className="">
+              <p className={LabelStyles}>Employee </p>
+              <ButtonComponent
+                className="border bg-yellow-400 px-2 text-white"
+                onClick={() => setShowManageModal(true)}
+                type="button"
+              >
+                Edit
+              </ButtonComponent>
+            </div>
+            {employees.map((employee) => {
+              console.log(employee);
+              return (
+                <div
+                  className="border bg-white flex flex-col items-center rounded-md hover:shadow-lg cursor-pointer p-2"
+                  key={employee._id}
+                >
+                  <div
+                    className={`h-32 w-32 bg-gray-100 rounded-full bg-no-repeat bg-cover bg-center flex justify-center items-center`}
+                    style={{
+                      backgroundImage: `url(${employee.profileImageUrl})`,
+                    }}
+                  >
+                    {employee.profileImageUrl ? null : (
+                      <div>
+                        <PhotoIcon className="w-auto" />
+                        <p>No Image</p>
+                      </div>
+                    )}
+                  </div>
+                  <div id="details" className="flex flex-col items-center">
+                    <span>
+                      {employee.firstname} {employee.lastname}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
           <div className="py-2">
             <div className="flex flex-col">
@@ -214,11 +264,21 @@ const EditDescriptionJobPage: NextPage = () => {
           <button
             className="bg-yellow-500 rounded-md py-2 px-3 text-white"
             type="submit"
+            form="hook-form"
           >
             Edit
           </button>
         </div>
       </form>
+
+      <ManageEmployeeEditModal
+        onClose={setShowManageModal}
+        show={showManageModal}
+        cancel={() => setShowManageModal(false)}
+        id={id}
+        token={cookies.token}
+        setEmployees={setEmployees}
+      />
     </>
   );
 };

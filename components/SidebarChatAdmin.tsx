@@ -9,19 +9,24 @@ const SidebarChatAdmin = ({
   setData,
   setRoomId,
   setRoomName,
-  messageList,
-  isReRenderSidebar
+  isReRenderSidebar,
 }: any) => {
-  // const { isReRenderSidebar, setIsReRenderSidebar } = useSocket();
+  const [allChatRooms, setAllChatRooms] = useState<any>([]);
+
   useEffect(() => {
-    console.log(isReRenderSidebar);
-  }, [isReRenderSidebar]);
-  return chatRoomsObjectsArray.map((room: any, id: string) => {
+    if (chatRoomsObjectsArray) {
+      setAllChatRooms(chatRoomsObjectsArray);
+    }
+  }, [chatRoomsObjectsArray]);
+
+  if (!chatRoomsObjectsArray) return null;
+
+  return allChatRooms.map((room: any, id: string) => {
     return (
       <div
         className={`${
-          data.index === id ? "bg-white" : "bg-gray-100"
-        } p-5 hover:bg-white cursor-pointer border-b border-gray-200`}
+          data.index === id ? "bg-white" : "bg-gray-200"
+        } p-5 hover:bg-white cursor-pointer my-1 rounded-md`}
         onClick={() => {
           setData({ ...data, index: id });
           setRoomId(room._id);

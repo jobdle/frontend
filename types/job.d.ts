@@ -31,8 +31,8 @@ interface JobEditable {
     color: string;
     minWage: number;
     name: string;
-
   };
   location: string;
   deadline: string;
+  employee: [];
 }

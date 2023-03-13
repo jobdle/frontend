@@ -15,14 +15,16 @@ interface Props {
   cancel: any;
   id: string | string[] | undefined;
   token: string;
+  employees: [];
 }
 
-export default function ManageEmployeeModal({
+export default function ManageEmployeeEditModal({
   onClose,
   show,
   cancel,
   id,
   token,
+  setEmployees,
 }: Props) {
   const [cookies] = useCookies(["token"]);
   const router = useRouter();
@@ -51,17 +53,9 @@ export default function ManageEmployeeModal({
     );
     console.log("SelectedEmployees", selectedEmployees);
     console.log("id", id);
-    try {
-      const response = await manageJob(
-        id,
-        { employee: selectedEmployees, status: "pending" },
-        token
-      );
-      console.log(response);
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-    }
+    setEmployees(selectedEmployees);
+    setIsLoading(false);
+    onClose(false);
   };
 
   return (
@@ -105,13 +99,13 @@ export default function ManageEmployeeModal({
                       <div className="flex items-center">
                         <span>Search: </span>
                         <input
-                        className="w-full border"
-                        // value={search}
-                        // onChange={(e) => setSearch(e.target.value.trim())}
-                        // onKeyDown={(e) => {
-                        //   if (e.key === "Enter")
-                        //     setQuery({ ...query, search: search });
-                        // }}
+                          className="w-full border"
+                          // value={search}
+                          // onChange={(e) => setSearch(e.target.value.trim())}
+                          // onKeyDown={(e) => {
+                          //   if (e.key === "Enter")
+                          //     setQuery({ ...query, search: search });
+                          // }}
                         />
                       </div>
                       <div className="flex items-center">
@@ -181,9 +175,6 @@ export default function ManageEmployeeModal({
                             <span>
                               {employee.firstname} {employee.lastname}
                             </span>
-                            <span className="text-gray-400">
-                              Front Developer
-                            </span>
                           </div>
                         </div>
                       );
@@ -205,7 +196,7 @@ export default function ManageEmployeeModal({
                       isLoading={isLoading}
                       disabled={isLoading}
                     >
-                      Manage
+                      Edit
                     </ButtonComponent>
                   </div>
                 </Dialog.Panel>
