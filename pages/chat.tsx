@@ -27,6 +27,7 @@ const ChatPage: NextPage = () => {
   const [cookies] = useCookies(["token"]);
   const refMessages = useRef<any[]>([]);
   const router = useRouter();
+  const refFile = useRef<any>(null);
   // const { userData } = useUser();
   // const { isReRenderSidebar, setIsReRenderSidebar } = useSocket();
 
@@ -265,6 +266,7 @@ const ChatPage: NextPage = () => {
     console.log("handleSubmitFile");
     handleUpload(event.target.files[0])
       .then((ImageUrl) => {
+        refFile.current.value = ""
         console.log(ImageUrl);
         if (socket !== null && userData) {
           if (!ImageUrl) return;
@@ -472,6 +474,7 @@ const ChatPage: NextPage = () => {
                 className="hidden"
                 onChange={handleSubmitFile}
                 accept="image/*"
+                ref={refFile}
               />
             </label>
             <input

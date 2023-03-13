@@ -27,15 +27,20 @@ export const splitTFromISO = (dateString: string) => {
 };
 
 export const handleUpload = async (file: File) => {
+  try {
   // if (!file) {
   //   alert("Please choose a file first!");
   //   return;
   // }
-  const storageRef = ref(storage, `/files/${file.name}`);
-  const snapshot = await uploadBytes(storageRef, await file.arrayBuffer());
-  const downloadUrl = await getDownloadURL(snapshot.ref);
+    console.log(file);
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const snapshot = await uploadBytes(storageRef, await file.arrayBuffer());
+    const downloadUrl = await getDownloadURL(snapshot.ref);
 
-  return downloadUrl;
+    return downloadUrl;
+  } catch(err) {
+    console.log(err)
+  }
   // uploadTask.on(
   //   "state_changed",
   //   (snapshot) => {

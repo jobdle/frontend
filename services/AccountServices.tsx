@@ -58,3 +58,17 @@ export const patchAccountUser = async (data: UserEditable, token: string) => {
   );
   return response;
 };
+
+export const changePassword = async (oldPassword:string, newPassword:string, token: string) => {
+  const response = await axios.patch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/password`,
+    {oldPassword:oldPassword,newPassword:newPassword},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response;
+};
