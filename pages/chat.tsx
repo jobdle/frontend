@@ -44,6 +44,7 @@ const ChatPage: NextPage = () => {
   const [userData, setUserData] = useState<User>();
   const [isReRenderSidebar, setIsReRenderSidebar] = useState(false);
   const [arrivalRoomId, setArrivalRoomId] = useState("");
+  const [isclickChatOnMoblie, setIsclickChatOnMoblie] = useState(false);
 
   const getRoom = async (token: string) => {
     console.log("IN getRoom search", search);
@@ -307,19 +308,23 @@ const ChatPage: NextPage = () => {
 
   return (
     // <SocketProvider>
-    <div className="w-full h-[90vh] max-h-[90vh] md:h-full flex flex-col md:flex md:flex-row rounded overflow-hidden shadow">
+    <div className="w-full h-[90vh] max-h-[90vh] md:h-full flex flex-col md:flex md:flex-row rounded overflow-hidden shadow relative">
       {/* Chat Sidebar part  */}
-      <div className="flex flex-col w-full h-full md:w-3/12">
+      <div
+        className={`${
+          isclickChatOnMoblie ? "z-0" : "z-10"
+        } flex flex-col h-full w-full md:w-3/12 bg-gray-100`}
+      >
         <div className="w-full h-14 p-5 border-b flex justify-center items-center bg-sky-500">
           <p className="font-bold flex justify-center text-white">
             {userData.role === "admin" ? "Chat" : "Your jobs"}
           </p>
         </div>
         {userData.role === "admin" ? (
-          <div>
+          <div className="flex items-center p-1">
             <span>Search: </span>
             <input
-              className="w-30"
+              className="w-full px-2"
               value={search}
               onChange={(e) => setSearch(e.target.value.trim())}
               onKeyDown={(e) => {
@@ -340,6 +345,8 @@ const ChatPage: NextPage = () => {
                   setRoomId={setRoomId}
                   setRoomName={setRoomName}
                   isReRenderSidebar={isReRenderSidebar}
+                  isclickChatOnMoblie={isclickChatOnMoblie}
+                  setIsclickChatOnMoblie={setIsclickChatOnMoblie}
                 ></SidebarChatAdmin>
               ) : null
             ) : (
@@ -388,9 +395,21 @@ const ChatPage: NextPage = () => {
         </div>
       </div>
       {/* Chat Message Content  */}
-      <div className="w-9/12 md:flex md:flex-col justify-between bg-white border-l border-gray-200 hidden">
+      <div
+        className={`${
+          isclickChatOnMoblie ? "z-10" : "z-0"
+        } w-full flex flex-col md:w-9/12 justify-between bg-white border-l border-gray-200 h-[90vh] absolute md:static`}
+      >
         {/* Chat title */}
-        <div className="w-full h-14 py-5 pl-5 pr-3 border-b flex justify-between items-center relative">
+        <div className="w-full h-14 py-5 pl-5 pr-3 border-b flex justify-between items-center">
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsclickChatOnMoblie(false)}
+              className="p-2 bg-yellow-500 text-white rounded"
+            >
+              GO back to Chat{" "}
+            </button>
+          </div>
           <p>{userData.role === "admin" ? roomName : "Admin"}</p>
           {userData.role === "admin" && (
             <button className="bg-green-500 p-2 rounded-lg text-white">
@@ -483,7 +502,7 @@ const ChatPage: NextPage = () => {
           </div>
         )}
         {/* Chat input message */}
-        <div className="flex border-t relative">
+        <div className="flex border-t">
           {/* {fileImage && (
             <div className="absolute bg-red-500 w-full h-28 -top-28"></div>
           )} */}

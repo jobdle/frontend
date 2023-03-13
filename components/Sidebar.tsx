@@ -97,9 +97,9 @@ const Sidebar: NextPage = () => {
   return (
     <>
       {/* <!-- mobile menu bar --> */}
-      <div className="relative inset-x-0 bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-between md:hidden text-white z-20">
+      <div className="relative inset-x-0 bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-between md:hidden text-white z-30">
         {/* <!-- logo --> */}
-        <a href="#" className="p-4 font-bold">
+        <a href="/" className="p-4 font-bold">
           {userData.firstname} {userData.lastname}
         </a>
         {/* <!-- mobile menu button --> */}
@@ -114,7 +114,7 @@ const Sidebar: NextPage = () => {
       <div
         className={`absolute bg-white shadow-lg min-w-screen ${
           !open.Navbar && "-translate-y-full"
-        } duration-200 md:hidden inset-x-0 top-14 z-10`}
+        } duration-200 md:hidden inset-x-0 top-14 z-20`}
       >
         {menuLists.map((menu, id) => {
           if (userData.role !== "admin" && menu.title === "Employee")

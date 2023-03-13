@@ -10,6 +10,8 @@ const SidebarChatAdmin = ({
   roomId,
   setRoomId,
   setRoomName,
+  isclickChatOnMoblie,
+  setIsclickChatOnMoblie,
 }: any) => {
   const [allChatRooms, setAllChatRooms] = useState<any>([]);
 
@@ -31,6 +33,9 @@ const SidebarChatAdmin = ({
           setData({ ...data, index: roomId });
           setRoomId(room._id);
           setRoomName(room.nameOfUser);
+          if (window.innerWidth < 768) {
+            setIsclickChatOnMoblie(true);
+          }
         }}
         key={room._id}
       >
