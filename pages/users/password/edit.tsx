@@ -56,7 +56,7 @@ const RecoverPasswordPage = () => {
       <div className="bg-sky-400 flex justify-center min-h-screen min-w-screen">
         <div className="bg-white w-8/12 md:w-4/12 my-20 p-10 rounded-xl border border-transparent">
           <div>
-            <p className="text-3xl">Recover</p>
+            <p className="text-3xl">Reset Password</p>
           </div>
           <div className="my-5">
             <form onSubmit={handleSubmit}>
