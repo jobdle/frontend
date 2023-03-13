@@ -4,9 +4,12 @@ import { useCookies } from "react-cookie";
 
 import Header from "../components/Header";
 import { useUser } from "../contexts/User";
-import { patchAccountUser } from "../services/AccountServices";
+import { changePassword, patchAccountUser } from "../services/AccountServices";
 import { handleUpload } from "../services/UtilsServices";
 import ButtonComponent from "../components/ButtonComponent";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "../components/ErrorMessage";
+import { useRouter } from "next/router";
 
 const defaultUser = {
   profileImageUrl: "",
@@ -17,8 +20,17 @@ const defaultUser = {
 };
 
 const ProfilePage = () => {
+  const router = useRouter();
   const { userData } = useUser();
   const [cookies] = useCookies(["token"]);
+  const {
+    register,
+    unregister,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const [profileDataObject, setProfileDataObject] =
     useState<UserEditable>(defaultUser);
@@ -52,6 +64,31 @@ const ProfilePage = () => {
     setDisabled(false);
   };
 
+  const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
+    console.log(data.newPassword, data.comfirmNewPassword,data.oldPassword);
+    if (data.newPassword === data.comfirmNewPassword) {
+      try {
+        const response = await changePassword(
+          data.oldPassword,
+          data.comfirmNewPassword,
+          cookies.token,
+        );
+        console.log(response);
+        alert(response.data.message);
+        reset();
+      } catch (error:any) {
+        alert(error.response.data.message);
+        console.error(error);
+        reset();
+      }
+    } else {
+      alert("Password doesn't match!");
+      reset();
+    }
+  });
+
+
   const handleSubmitEditProfile = async () => {
     setIsLoading(true);
     let submitedData = profileDataObject;
@@ -65,7 +102,8 @@ const ProfilePage = () => {
       }
     }
     try {
-      await patchAccountUser(submitedData, cookies.token);
+      const response = await patchAccountUser(submitedData, cookies.token);
+      alert(response.data.message);
     } catch (error) {
       console.error(error);
     }
@@ -186,7 +224,7 @@ const ProfilePage = () => {
               </div>
               <div>
                 <ButtonComponent
-                  type="submit"
+                  type="button"
                   className={`${
                     !disabled
                       ? "bg-sky-500 hover:bg-sky-400 text-white border border-transparent"
@@ -201,6 +239,7 @@ const ProfilePage = () => {
               </div>
             </div>
             <hr className="my-3 border" />
+            <form onSubmit={onSubmit}>
             <div>
               <div className="mb-3">
                 <label className="block font-medium text-gray-700 my-1">
@@ -210,6 +249,13 @@ const ProfilePage = () => {
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                   type="password"
                   placeholder="Old Password"
+                  {...register("oldPassword", {
+                    required: "This is required.",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters.",
+                    },
+                  })}
                 />
               </div>
               <div className="mb-3">
@@ -221,8 +267,15 @@ const ProfilePage = () => {
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                   type="password"
                   placeholder="New password"
-                  name="password"
+                  {...register("newPassword", {
+                    required: "This is required.",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters.",
+                    },
+                  })}
                 />
+                <ErrorMessage>{errors.newPassword?.message}</ErrorMessage>
               </div>
               <div className="mb-3">
                 <label className="block font-medium text-gray-700 my-1">
@@ -232,6 +285,13 @@ const ProfilePage = () => {
                   className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                   type="password"
                   placeholder="Confirm new password"
+                  {...register("comfirmNewPassword", {
+                    required: "This is required.",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters.",
+                    },
+                  })}
                 />
               </div>
               <div>
@@ -243,6 +303,7 @@ const ProfilePage = () => {
                 </button>
               </div>
             </div>
+            </form>
           </div>
         </div>
       </div>
