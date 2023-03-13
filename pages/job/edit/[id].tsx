@@ -1,3 +1,4 @@
+import { PhotoIcon } from "@heroicons/react/24/outline";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -185,34 +186,38 @@ const EditDescriptionJobPage: NextPage = () => {
                 Edit
               </ButtonComponent>
             </div>
-            {employees.map((employee) => {
-              console.log(employee);
-              return (
-                <div
-                  className="border bg-white flex flex-col items-center rounded-md hover:shadow-lg cursor-pointer p-2"
-                  key={employee._id}
-                >
-                  <div
-                    className={`h-32 w-32 bg-gray-100 rounded-full bg-no-repeat bg-cover bg-center flex justify-center items-center`}
-                    style={{
-                      backgroundImage: `url(${employee.profileImageUrl})`,
-                    }}
-                  >
-                    {employee.profileImageUrl ? null : (
-                      <div>
-                        <PhotoIcon className="w-auto" />
-                        <p>No Image</p>
+            <div className="col-span-4">
+              <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-1">
+                {employees.map((employee) => {
+                  console.log(employee);
+                  return (
+                    <div
+                      className="border bg-white flex flex-col items-center rounded-md hover:shadow-lg cursor-pointer p-2 col-span-1"
+                      key={employee._id}
+                    >
+                      <div
+                        className={`h-32 w-32 bg-gray-100 rounded-full bg-no-repeat bg-cover bg-center flex justify-center items-center`}
+                        style={{
+                          backgroundImage: `url(${employee.profileImageUrl})`,
+                        }}
+                      >
+                        {employee.profileImageUrl ? null : (
+                          <div>
+                            <PhotoIcon className="w-auto" />
+                            <p>No Image</p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div id="details" className="flex flex-col items-center">
-                    <span>
-                      {employee.firstname} {employee.lastname}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+                      <div id="details" className="flex flex-col items-center">
+                        <span>
+                          {employee.firstname} {employee.lastname}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
           <div className="py-2">
             <div className="flex flex-col">

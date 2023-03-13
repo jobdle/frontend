@@ -101,7 +101,7 @@ const ChatPage: NextPage = () => {
 
       let chatRoomsObjectsArray = await getRoom(cookies.token);
 
-      if (chatRoomsObjectsArray.length === 0) return;
+      // if (chatRoomsObjectsArray.data.length === 0) return;
       if (chatRoomsObjectsArray !== undefined) {
         if (userData.role === "user") {
           // USER CHAT
@@ -329,6 +329,9 @@ const ChatPage: NextPage = () => {
                 <div
                   className="bg-white rounded-md px-3 py-2 cursor-pointer hover:shadow-lg m-1"
                   key={id}
+                  onClick={() => {
+                    router.push(`job/details/${id}`);
+                  }}
                 >
                   <div id="job-header" className="text-lg">
                     <span>{job.title}</span>
@@ -371,9 +374,11 @@ const ChatPage: NextPage = () => {
         {/* Chat title */}
         <div className="w-full h-14 py-5 pl-5 pr-3 border-b flex justify-between items-center relative">
           <p>{userData.role === "admin" ? roomName : "Admin"}</p>
-          <button className="bg-green-500 p-2 rounded-lg text-white">
-            detail
-          </button>
+          {userData.role === "admin" && (
+            <button className="bg-green-500 p-2 rounded-lg text-white">
+              User Detail
+            </button>
+          )}
         </div>
 
         {/* Chat content */}
@@ -429,7 +434,7 @@ const ChatPage: NextPage = () => {
                               : "bg-gray-300 text-gray-600"
                           } px-4 py-2 rounded-lg flex space-x-2 items-center`}
                         >
-                          <p>Your job was updated</p>
+                          <p>The job was updated</p>
                           <button
                             onClick={() => {
                               router.push(`/job/details/${message.content}`);

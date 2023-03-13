@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import ButtonComponent from "./ButtonComponent";
 import ReactSelect from "react-select";
+import { getAllCategories } from "../services/CategoryServices";
 
 interface Props {
   onClose: any;
@@ -17,6 +18,11 @@ interface Props {
   token: string;
   employees: [];
 }
+
+const OrderListOptions = [
+  { value: "desc", label: "desc" },
+  { value: "asc", label: "asc" },
+];
 
 export default function ManageEmployeeEditModal({
   onClose,
@@ -33,16 +39,25 @@ export default function ManageEmployeeEditModal({
   const [selectedEmployeeArray, setSelectedEmployeeArray] = useState<number[]>(
     []
   );
+  const [allCategories, setallCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState({});
 
   useEffect(() => {
     if (!show) return;
     fetchData();
-  }, [show]);
+  }, [show, query]);
 
   const fetchData = async () => {
-    const allEmployees = await getAllEmployees(cookies.token, undefined); // error must have query
-    setAllEmployees(allEmployees.data);
+    console.log("query", query);
+    const response = await getAllEmployees(cookies.token, query); // error must have query
+    const response2 = await getAllCategories(cookies.token);
+    const allCategoriesOptions = response2.data.map((category: any) => {
+      return { value: category.name, label: category.name };
+    });
+    setAllEmployees(response.data);
+    setallCategories(allCategoriesOptions);
   };
 
   const handleManageEmployees = async () => {
@@ -92,44 +107,42 @@ export default function ManageEmployeeEditModal({
                 <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-xl bg-white p-5 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 flex justify-between items-center"
+                    className="text-lg font-medium leading-6 text-gray-900"
                   >
                     <div>Manage Employees</div>
-                    <div className="flex space-x-2">
-                      <div className="flex items-center">
-                        <span>Search: </span>
-                        <input
-                          className="w-full border"
-                          // value={search}
-                          // onChange={(e) => setSearch(e.target.value.trim())}
-                          // onKeyDown={(e) => {
-                          //   if (e.key === "Enter")
-                          //     setQuery({ ...query, search: search });
-                          // }}
-                        />
-                      </div>
-                      <div className="flex items-center">
-                        <span>Sort: </span>
-                        <ReactSelect
-                        // options={sortListOptions}
-                        // defaultValue={sortListOptions[0]}
-                        // onChange={(option) =>
-                        //   setQuery({ ...query, sort: option.value })
-                        // }
-                        />
-                      </div>
-                      <div className="flex items-center">
-                        <span>Order</span>
-                        <ReactSelect
-                        // options={OrderListOptions}
-                        // defaultValue={OrderListOptions[0]}
-                        // onChange={(option) =>
-                        //   setQuery({ ...query, order: option.value })
-                        // }
-                        />
-                      </div>
-                    </div>
                   </Dialog.Title>
+                  <div className="flex space-x-2">
+                    <div className="flex items-center">
+                      <span>Search: </span>
+                      <input
+                        className="w-full border"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value.trim())}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter")
+                            setQuery({ ...query, search: search });
+                        }}
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <span>Category </span>
+                      <ReactSelect
+                        options={allCategories}
+                        onChange={(option: any) =>
+                          setQuery({ ...query, category: option.value })
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <span>Order</span>
+                      <ReactSelect
+                        options={OrderListOptions}
+                        onChange={(option: any) =>
+                          setQuery({ ...query, order: option.value })
+                        }
+                      />
+                    </div>
+                  </div>
                   <div className="w-full bg-gray-100 rounded my-3 p-2 grid grid-cols-5 space-x-2">
                     {allEmployees.map((employee, index) => {
                       return (

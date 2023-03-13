@@ -237,7 +237,7 @@ const AdminTable = () => {
   return (
     <>
       <div className="my-3">
-        <div className="flex mb-3 justify-between">
+        <div className="flex flex-wrap mb-3 justify-between">
           <div>
             <button className={ButtonStyles("new")} onClick={pushStatusNew}>
               New
@@ -249,8 +249,8 @@ const AdminTable = () => {
               Pending
             </button>
           </div>
-          <div className="flex space-x-2">
-            <div className="flex items-center">
+          <div className="flex space-x-2 items-center flex-wrap">
+            <div className="flex flex items-center flex-wrap">
               <span>Search: </span>
               <input
                 className="w-30"
@@ -261,7 +261,7 @@ const AdminTable = () => {
                 }}
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex flex items-center flex-wrap">
               <span>Sort: </span>
               <Select
                 options={sortListOptions}
@@ -271,7 +271,7 @@ const AdminTable = () => {
                 }
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex flex items-center flex-wrap">
               <span>Order</span>
               <Select
                 options={OrderListOptions}
