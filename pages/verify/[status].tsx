@@ -100,7 +100,12 @@ const VerifyPage = () => {
                 <span className="justify-center">Resend</span>
               </button>
             </div>
-            <p onClick={()=>router.push("/signin")} className="cursor-pointer">Back to sign in</p>
+            <p
+              onClick={() => router.push("/signin")}
+              className="cursor-pointer"
+            >
+              Back to sign in
+            </p>
           </div>
         </div>
       </>

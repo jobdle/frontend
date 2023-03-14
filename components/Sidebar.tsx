@@ -140,9 +140,7 @@ const Sidebar: NextPage = () => {
         {/* Log out button */}
         <div
           onClick={() => setShowSignOutMoDal(true)}
-          className={`${
-            open.Sidebar ? "flex items-center space-x-3" : "flex justify-center"
-          } p-1 mx-2 mb-2 rounded-md font-medium bg-red-500 hover:bg-red-100 hover:text-red-500 cursor-pointer duration-100 text-white bottom-0`}
+          className="flex justify-center p-2 hover:bg-gray-200 bg-red-200"
         >
           <ArrowRightOnRectangleIcon className="w-5 h-5" />
           <span className={`${open.Sidebar ? "" : "hidden"}`}>

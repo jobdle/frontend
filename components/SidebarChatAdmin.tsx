@@ -12,6 +12,7 @@ const SidebarChatAdmin = ({
   setRoomName,
   isclickChatOnMoblie,
   setIsclickChatOnMoblie,
+  setIsShowMessage,
 }: any) => {
   const [allChatRooms, setAllChatRooms] = useState<any>([]);
 
@@ -23,16 +24,17 @@ const SidebarChatAdmin = ({
 
   if (!chatRoomsObjectsArray) return null;
 
-  return allChatRooms.map((room: any) => {
+  return allChatRooms.map((room: any, id: any) => {
     return (
       <div
         className={`${
-          roomId === room._id ? "bg-white" : "bg-gray-200"
+          data.index === room._id ? "bg-white" : "bg-gray-200"
         } p-5 hover:bg-white cursor-pointer my-1 rounded-md`}
         onClick={() => {
-          setData({ ...data, index: roomId });
+          setData({ ...data, index: room._id });
           setRoomId(room._id);
           setRoomName(room.nameOfUser);
+          setIsShowMessage(true);
           if (window.innerWidth < 768) {
             setIsclickChatOnMoblie(true);
           }

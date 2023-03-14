@@ -62,7 +62,7 @@ const SignInPage: SignInPageWithNoLayout = () => {
           alert("Your Email or password is wrong");
           setValue("password", "");
         } else {
-          alert("Error bewteen client and server!");
+          alert("Error between client and server!");
         }
         setIsLoading(false);
       }

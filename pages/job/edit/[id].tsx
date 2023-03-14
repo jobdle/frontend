@@ -145,7 +145,9 @@ const EditDescriptionJobPage: NextPage = () => {
             <div className="col-span-4">
               <p>
                 {jobDetailsObject.category.name}{" "}
-                <span className="text-red-500 text-xs">* Can&apos;t Change</span>
+                <span className="text-red-500 text-xs">
+                  * Can&apos;t Change
+                </span>
               </p>
             </div>
           </div>
@@ -231,9 +233,7 @@ const EditDescriptionJobPage: NextPage = () => {
           <div className="py-2">
             <div className="flex flex-col">
               <div className="">
-                <p className="font-bold">
-                  Pictures (at most 5 photos ){filesCountRef.current}
-                </p>
+                <p className="font-bold">Pictures (at most 5 photos )</p>
               </div>
               <div className="w-full flex bg-gray-100 rounded-md flex-wrap">
                 {/* EDIT!! */}
@@ -245,24 +245,24 @@ const EditDescriptionJobPage: NextPage = () => {
                     }}
                     key={id}
                   >
-                    <div
+                    {/* <div
                       className="absolute -right-2 -top-2 rounded-full w-5 h-5 bg-red-500 cursor-pointer font-bold flex justify-center items-center text-white text-xs"
                       onClick={() => deletePicture(file)}
                     >
                       X
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </div>
               <div className="px-5 my-3">
-                <input
+                {/* <input
                   type="file"
                   id="edit-avatar"
                   onChange={handleChangeFile}
                   accept="image/*"
                   className="w-full m-auto bg-gray-100"
                   multiple
-                />
+                /> */}
               </div>
             </div>
           </div>

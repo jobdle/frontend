@@ -45,8 +45,10 @@ const ChatPage: NextPage = () => {
   const [isReRenderSidebar, setIsReRenderSidebar] = useState(false);
   const [arrivalRoomId, setArrivalRoomId] = useState("");
   const [isclickChatOnMoblie, setIsclickChatOnMoblie] = useState(false);
+  const [isShowMessage, setIsShowMessage] = useState(true);
 
-  const getRoom = async (token: string) => {
+  const getRoom = async (token: string, search: any) => {
+    setIsReRenderSidebar(true);
     try {
       let searchUrl = "";
       if (!!search) {
@@ -61,11 +63,13 @@ const ChatPage: NextPage = () => {
           },
         }
       );
+
       return response.data;
     } catch (error: any) {
       console.error(error);
       // alert(error.response.data.message);
     }
+    setIsReRenderSidebar(false);
   };
 
   const getUserData = async () => {
@@ -88,7 +92,9 @@ const ChatPage: NextPage = () => {
   // for getChatRooms
   useEffect(() => {
     const init = async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
+      setIsReRenderSidebar(true);
+
       let userData = await getUserData();
       if (userData) {
         setUserData(userData);
@@ -98,9 +104,12 @@ const ChatPage: NextPage = () => {
         router.push("/signin");
       }
 
-      let chatRoomsObjectsArray = await getRoom(cookies.token);
+      let chatRoomsObjectsArray = await getRoom(cookies.token, search);
 
-      // if (chatRoomsObjectsArray.data.length === 0) return;
+      if (chatRoomsObjectsArray.length === 0) {
+        setChatRoomsObjectsArray(chatRoomsObjectsArray);
+        return;
+      }
       if (chatRoomsObjectsArray !== undefined) {
         if (userData.role === "user") {
           // USER CHAT
@@ -110,18 +119,12 @@ const ChatPage: NextPage = () => {
         } else if (userData.role === "admin") {
           // ADMIN CHAT
           setChatRoomsObjectsArray(chatRoomsObjectsArray);
-          if (roomId === undefined) {
-            setRoomId(chatRoomsObjectsArray[0]._id);
-            setRoomName(chatRoomsObjectsArray[0].nameOfUser);
-            setMessageList(chatRoomsObjectsArray[0].messages);
-            refMessages.current = chatRoomsObjectsArray[0].messages;
-          } else {
-            let selected = chatRoomsObjectsArray.find(
-              (room: any) => room._id === roomId
-            );
-            setMessageList(selected.messages);
-            refMessages.current = selected.messages;
-          }
+          // if (roomId === undefined) {
+          setRoomId(chatRoomsObjectsArray[0]._id);
+          setRoomName(chatRoomsObjectsArray[0].nameOfUser);
+          setMessageList(chatRoomsObjectsArray[0].messages);
+          refMessages.current = chatRoomsObjectsArray[0].messages;
+          // }
           // if (roomId) {
           //   let selected = chatRoomsObjectsArray.find(
           //     (room: any) => room._id === roomId
@@ -129,12 +132,19 @@ const ChatPage: NextPage = () => {
           //   setMessageList(selected.messages);
           //   refMessages.current = selected.messages;
           // }
+          // if (search && roomId) {
+          //   setRoomId(chatRoomsObjectsArray[0]._id);
+          //   setRoomName(chatRoomsObjectsArray[0].nameOfUser);
+          //   setMessageList(chatRoomsObjectsArray[0].messages);
+          //   refMessages.current = chatRoomsObjectsArray[0].messages;
+          // }
         }
       }
-      setIsLoading(false);
+      // setIsLoading(false);
+      setIsReRenderSidebar(false);
     };
     init();
-  }, [roomId, socket, search]);
+  }, [socket, search]);
 
   const fetchData = async () => {
     try {
@@ -307,7 +317,10 @@ const ChatPage: NextPage = () => {
             <input
               className="w-full px-2"
               value={search}
-              onChange={(e) => setSearch(e.target.value.trim())}
+              onChange={(e) => {
+                setIsShowMessage(false);
+                setSearch(e.target.value);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") setSearch(search);
               }}
@@ -328,6 +341,7 @@ const ChatPage: NextPage = () => {
                   isReRenderSidebar={isReRenderSidebar}
                   isclickChatOnMoblie={isclickChatOnMoblie}
                   setIsclickChatOnMoblie={setIsclickChatOnMoblie}
+                  setIsShowMessage={setIsShowMessage}
                 ></SidebarChatAdmin>
               ) : null
             ) : (
@@ -408,78 +422,86 @@ const ChatPage: NextPage = () => {
             className="space-y-2 p-3 overflow-y-auto flex-1 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
             style={{}}
           >
-            {messageList.map((message, id) => {
-              return (
-                <div className="chat-message" key={id}>
-                  <div
-                    className={`${
-                      userData?._id === message.senderId
-                        ? "items-end justify-end"
-                        : ""
-                    } flex`}
-                  >
+            {isShowMessage ? (
+              messageList.map((message, id) => {
+                return (
+                  <div className="chat-message" key={id}>
                     <div
                       className={`${
                         userData?._id === message.senderId
-                          ? "items-end order-1"
-                          : "items-start order-2"
-                      } flex rounded overflow-x-hidden max-w-xs`}
+                          ? "items-end justify-end"
+                          : ""
+                      } flex`}
                     >
-                      {/* <div>hi</div> */}
-                      <div>
-                        {message.content_type === "Image" && (
-                          <div
-                            className="h-80 w-80 max-w-xs bg-no-repeat bg-cover bg-center"
-                            style={{
-                              backgroundImage: `url(${message.content})`,
-                            }}
-                          ></div>
-                        )}
-                        {message.content_type === "Text" && (
-                          <div
-                            className={`${
-                              userData?._id === message.senderId
-                                ? "bg-sky-500 text-white"
-                                : "bg-gray-300 text-gray-600"
-                            } px-4 py-2 rounded-lg inline-block`}
-                          >
-                            <div className="flex">{message.content}</div>
-                          </div>
-                        )}
-                        {message.content_type === "work" && (
-                          <div
-                            className={`${
-                              userData?._id === message.senderId
-                                ? "bg-sky-500 text-white"
-                                : "bg-gray-300 text-gray-600"
-                            } px-4 py-2 rounded-lg flex space-x-2 items-center`}
-                          >
-                            <p>The job was updated</p>
-                            <button
-                              onClick={() => {
-                                router.push(`/job/details/${message.content}`);
+                      <div
+                        className={`${
+                          userData?._id === message.senderId
+                            ? "items-end order-1"
+                            : "items-start order-2"
+                        } flex rounded overflow-x-hidden max-w-xs`}
+                      >
+                        {/* <div>hi</div> */}
+                        <div>
+                          {message.content_type === "Image" && (
+                            <div
+                              className="h-80 w-80 max-w-xs bg-no-repeat bg-cover bg-center"
+                              style={{
+                                backgroundImage: `url(${message.content})`,
                               }}
-                              className="bg-white text-sky-500 p-2 rounded-md"
+                            ></div>
+                          )}
+                          {message.content_type === "Text" && (
+                            <div
+                              className={`${
+                                userData?._id === message.senderId
+                                  ? "bg-sky-500 text-white"
+                                  : "bg-gray-300 text-gray-600"
+                              } px-4 py-2 rounded-lg inline-block`}
                             >
-                              Details
-                            </button>
-                          </div>
-                        )}
+                              <div className="flex">{message.content}</div>
+                            </div>
+                          )}
+                          {message.content_type === "work" && (
+                            <div
+                              className={`${
+                                userData?._id === message.senderId
+                                  ? "bg-sky-500 text-white"
+                                  : "bg-gray-300 text-gray-600"
+                              } px-4 py-2 rounded-lg flex space-x-2 items-center`}
+                            >
+                              <p>The job was updated</p>
+                              <button
+                                onClick={() => {
+                                  router.push(
+                                    `/job/details/${message.content}`
+                                  );
+                                }}
+                                className="bg-white text-sky-500 p-2 rounded-md"
+                              >
+                                Details
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
+                    <div
+                      className={`${
+                        userData?._id === message.senderId
+                          ? "items-end justify-end"
+                          : ""
+                      } flex text-gray-400 text-xs`}
+                    >
+                      {new Date(message.timeStamp).toString().substring(16, 21)}
+                    </div>
                   </div>
-                  <div
-                    className={`${
-                      userData?._id === message.senderId
-                        ? "items-end justify-end"
-                        : ""
-                    } flex text-gray-400 text-xs`}
-                  >
-                    {new Date(message.timeStamp).toString().substring(16, 21)}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="h-full w-full flex justify-center items-center">
+                <p>Please click on Chat room to start chatting</p>
+              </div>
+            )}
           </div>
         )}
         {/* Chat input message */}
