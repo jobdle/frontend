@@ -193,9 +193,6 @@ export default function ManageEmployeeModal({
                             <span>
                               {employee.firstname} {employee.lastname}
                             </span>
-                            <span className="text-gray-400">
-                              Front Developer
-                            </span>
                           </div>
                         </div>
                       );
