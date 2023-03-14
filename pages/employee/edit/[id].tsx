@@ -103,7 +103,7 @@ const EmployeedetailsPage = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    let submitedData = data;
+    let submitedData: any = data;
     if (!submitedData) return;
     if (file) {
       try {

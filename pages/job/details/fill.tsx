@@ -74,7 +74,7 @@ const FillDescriptionJobPage: NextPage = () => {
   const onPostJob = handleSubmit(async (data) => {
     setIsLoading(true);
     if (!data) return;
-    let submitedData = data;
+    let submitedData:any = data;
 
     submitedData.category = JSON.parse(submitedData.category);
 

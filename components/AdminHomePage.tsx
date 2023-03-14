@@ -111,12 +111,12 @@ const AdminTable = () => {
     router.push(`/job/details/${id}`);
   };
 
-  if (!allJobs) return null;
-
   useEffect(() => {
-    if (!status) return;
+    // if (!status) return;
     fetchData();
   }, [state.page, status, query]);
+
+  if (!allJobs) return null;
 
   const HeaderTableStyles = "text-start text-sky-700 py-3";
 
@@ -131,7 +131,7 @@ const AdminTable = () => {
             <thead>
               <tr className="border-b-2 border-sky-300">
                 <th className={`${HeaderTableStyles} pl-2 md:pl-4`}>
-                  Employer's Name
+                  Employer&apos;s Name
                 </th>
                 <th className={HeaderTableStyles}>Title</th>
                 <th className={HeaderTableStyles}>Category</th>

@@ -101,7 +101,7 @@ const HistoryPage: NextPage = () => {
                 <tr className="border-b-2 border-sky-300">
                   {userData.role === "admin" ? (
                     <th className="text-start text-sky-700 py-3 pl-2 md:pl-4">
-                      Employer's Name
+                      Employer&apos;s Name
                     </th>
                   ) : (
                     ""

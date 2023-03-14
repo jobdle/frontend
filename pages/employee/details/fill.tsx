@@ -59,7 +59,7 @@ function FillEmployeeDetailPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     setLoading(true);
-    let submitedData = data;
+    let submitedData: any = data;
     if (!submitedData) return;
     if (file) {
       try {
@@ -72,8 +72,7 @@ function FillEmployeeDetailPage() {
     try {
       const response = await postEmployee(submitedData, cookies.token);
       router.push("/employee");
-    } catch (error) {
-    }
+    } catch (error) {}
   });
 
   return (

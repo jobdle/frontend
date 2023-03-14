@@ -33,7 +33,7 @@ const EditDescriptionJobPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [jobDetailsObject, setJobDetailsObject] = useState<JobEditable>();
+  const [jobDetailsObject, setJobDetailsObject] = useState<any>();
   const [employees, setEmployees] = useState([]);
   const [showManageModal, setShowManageModal] = useState(false);
   const {
@@ -67,7 +67,7 @@ const EditDescriptionJobPage: NextPage = () => {
   //   setJobDetailsObject({ ...jobDetailsObject, deadline: date });
   // };
 
-  const onEditjob = handleSubmit(async (data: JobEditable) => {
+  const onEditjob = handleSubmit(async (data: any) => {
     if (!id) return;
     await editJob(id, { ...data, employee: employees }, cookies.token);
     router.push(`/job/details/${id}`);
@@ -145,7 +145,7 @@ const EditDescriptionJobPage: NextPage = () => {
             <div className="col-span-4">
               <p>
                 {jobDetailsObject.category.name}{" "}
-                <span className="text-red-500 text-xs">* Can't Change</span>
+                <span className="text-red-500 text-xs">* Can&apos;t Change</span>
               </p>
             </div>
           </div>
@@ -198,7 +198,7 @@ const EditDescriptionJobPage: NextPage = () => {
             </div>
             <div className="col-span-4">
               <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-1">
-                {employees.map((employee) => {
+                {employees.map((employee: any) => {
                   return (
                     <div
                       className="border bg-white flex flex-col items-center rounded-md hover:shadow-lg cursor-pointer p-2 col-span-1"
@@ -237,7 +237,7 @@ const EditDescriptionJobPage: NextPage = () => {
               </div>
               <div className="w-full flex bg-gray-100 rounded-md flex-wrap">
                 {/* EDIT!! */}
-                {jobDetailsObject.pictureUrl.map((file, id) => (
+                {jobDetailsObject.pictureUrl.map((file: any, id: any) => (
                   <div
                     className={`h-40 w-40 m-2 rounded-md bg-no-repeat bg-cover bg-center flex justify-center items-center relative`}
                     style={{

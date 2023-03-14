@@ -100,10 +100,8 @@ const EmployerDashBoardPage: NextPage = () => {
   const showingJobs =
     userJobs.length === 0 ? (
       <div className="w-full flex justify-center items-center">
-        {" "}
-        You don't have Job in "
-        {status.length < 2 ? status : "new & pending"}"
-        status
+        &quot; You don&apos;t have Job in &quot;
+        {status.length < 2 ? status : "new & pending"}&quot; status
       </div>
     ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -165,7 +163,7 @@ const EmployerDashBoardPage: NextPage = () => {
             <Select
               options={statusOptions}
               defaultValue={statusOptions[0]}
-              onChange={(option) => setStatus(option?.value)}
+              onChange={(option: any) => setStatus(option?.value)}
             />
           </div>
         </div>

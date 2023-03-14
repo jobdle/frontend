@@ -69,11 +69,11 @@ const ProfilePage = () => {
         const response = await changePassword(
           data.oldPassword,
           data.comfirmNewPassword,
-          cookies.token,
+          cookies.token
         );
         alert(response.data.message);
         reset();
-      } catch (error:any) {
+      } catch (error: any) {
         alert(error.response.data.message);
         console.error(error);
         reset();
@@ -84,11 +84,10 @@ const ProfilePage = () => {
     }
   });
 
-
   const handleSubmitEditProfile = async () => {
     setIsLoading(true);
-    let submitedData = profileDataObject;
-    if (!submitedData) return; 
+    let submitedData: any = profileDataObject;
+    if (!submitedData) return;
     if (file) {
       try {
         const profileImageUrl = await handleUpload(file);
@@ -237,69 +236,72 @@ const ProfilePage = () => {
             </div>
             <hr className="my-3 border" />
             <form onSubmit={onSubmit}>
-            <div>
-              <div className="mb-3">
-                <label className="block font-medium text-gray-700 my-1">
-                  Old password
-                </label>
-                <input
-                  className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
-                  type="password"
-                  placeholder="Old Password"
-                  {...register("oldPassword", {
-                    required: "This is required.",
-                    minLength: {
-                      value: 8,
-                      message: "Password must have at least 8 characters.",
-                    },
-                  })}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block font-medium text-gray-700 my-1">
-                  New password
-                  <span className="text-gray-400"> (At least 8 characters)</span>
-                </label>
-                <input
-                  className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
-                  type="password"
-                  placeholder="New password"
-                  {...register("newPassword", {
-                    required: "This is required.",
-                    minLength: {
-                      value: 8,
-                      message: "Password must have at least 8 characters.",
-                    },
-                  })}
-                />
-                <ErrorMessage>{errors.newPassword?.message}</ErrorMessage>
-              </div>
-              <div className="mb-3">
-                <label className="block font-medium text-gray-700 my-1">
-                  Confirm new password
-                </label>
-                <input
-                  className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
-                  type="password"
-                  placeholder="Confirm new password"
-                  {...register("comfirmNewPassword", {
-                    required: "This is required.",
-                    minLength: {
-                      value: 8,
-                      message: "Password must have at least 8 characters.",
-                    },
-                  })}
-                />
-              </div>
               <div>
-                <button
-                  type="submit"
-                  className="rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-md hover:bg-red-400"
-                >
-                  Change Password
-                </button>
+                <div className="mb-3">
+                  <label className="block font-medium text-gray-700 my-1">
+                    Old password
+                  </label>
+                  <input
+                    className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                    type="password"
+                    placeholder="Old Password"
+                    {...register("oldPassword", {
+                      required: "This is required.",
+                      minLength: {
+                        value: 8,
+                        message: "Password must have at least 8 characters.",
+                      },
+                    })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block font-medium text-gray-700 my-1">
+                    New password
+                    <span className="text-gray-400">
+                      {" "}
+                      (At least 8 characters)
+                    </span>
+                  </label>
+                  <input
+                    className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                    type="password"
+                    placeholder="New password"
+                    {...register("newPassword", {
+                      required: "This is required.",
+                      minLength: {
+                        value: 8,
+                        message: "Password must have at least 8 characters.",
+                      },
+                    })}
+                  />
+                  <ErrorMessage>{errors.newPassword?.message}</ErrorMessage>
+                </div>
+                <div className="mb-3">
+                  <label className="block font-medium text-gray-700 my-1">
+                    Confirm new password
+                  </label>
+                  <input
+                    className="border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                    type="password"
+                    placeholder="Confirm new password"
+                    {...register("comfirmNewPassword", {
+                      required: "This is required.",
+                      minLength: {
+                        value: 8,
+                        message: "Password must have at least 8 characters.",
+                      },
+                    })}
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-md hover:bg-red-400"
+                  >
+                    Change Password
+                  </button>
+                </div>
               </div>
-            </div>
             </form>
           </div>
         </div>

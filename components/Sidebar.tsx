@@ -15,6 +15,7 @@ import {
   CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 import Navbar from "./navbar";
+import Link from "next/link";
 
 type State = {
   firstname: string;
@@ -98,9 +99,8 @@ const Sidebar: NextPage = () => {
       {/* <!-- mobile menu bar --> */}
       <div className="relative inset-x-0 bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-between md:hidden text-white z-30">
         {/* <!-- logo --> */}
-        <a href="/" className="p-4 font-bold">
-          {userData.firstname} {userData.lastname}
-        </a>
+        <Link href="/" className="p-4 font-bold" />
+        {userData.firstname} {userData.lastname}
         {/* <!-- mobile menu button --> */}
         <button
           className="p-4 focus:outline-none"

@@ -25,7 +25,7 @@ const Calendar = () => {
   const format = () => {
     if (allJobs.length === 0) return;
     else {
-      allJobs.map((job) => {
+      allJobs.map((job: any) => {
         return setTimeEvents((timeEvents) => [
           ...timeEvents,
           {

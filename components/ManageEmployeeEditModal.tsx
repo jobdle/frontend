@@ -17,6 +17,7 @@ interface Props {
   id: string | string[] | undefined;
   token: string;
   employees: [];
+  setEmployees: any;
 }
 
 const OrderListOptions = [
@@ -31,7 +32,7 @@ export default function ManageEmployeeEditModal({
   id,
   token,
   setEmployees,
-}: Props) {
+}: any) {
   const [cookies] = useCookies(["token"]);
   const router = useRouter();
 
