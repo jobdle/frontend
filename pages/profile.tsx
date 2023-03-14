@@ -104,6 +104,7 @@ const ProfilePage = () => {
     try {
       const response = await patchAccountUser(submitedData, cookies.token);
       alert(response.data.message);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
