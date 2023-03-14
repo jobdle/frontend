@@ -44,12 +44,9 @@ const SignInPage: SignInPageWithNoLayout = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     if (!data) return;
-    console.log(data);
     setIsLoading(true);
     try {
-      console.log("signInAccount");
       const response = await signInAccount(data);
-      console.log("response", response);
 
       if (!response.data.accessToken) {
         // กรณีไม่มี acessToken

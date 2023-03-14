@@ -50,7 +50,6 @@ export default function ManageEmployeeEditModal({
   }, [show, query]);
 
   const fetchData = async () => {
-    console.log("query", query);
     const response = await getAllEmployees(cookies.token, query); // error must have query
     const response2 = await getAllCategories(cookies.token);
     const allCategoriesOptions = response2.data.map((category: any) => {
@@ -66,8 +65,7 @@ export default function ManageEmployeeEditModal({
     const selectedEmployees: Employee[] = selectedEmployeeArray.map(
       (index) => allEmployees[index]
     );
-    console.log("SelectedEmployees", selectedEmployees);
-    console.log("id", id);
+
     setEmployees(selectedEmployees);
     setIsLoading(false);
     onClose(false);

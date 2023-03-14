@@ -27,7 +27,6 @@ const VerifyIndexPage = () => {
 
   useEffect(() => {
     handleVerify();
-    console.log(verify_email_token);
   }, [verify_email_token]);
 
   return <></>;

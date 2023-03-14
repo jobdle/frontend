@@ -57,7 +57,6 @@ const FillDescriptionJobPage: NextPage = () => {
 
   useEffect(() => {
     fetchAllCategories();
-    console.log(files);
   }, []);
 
   const handleChangeFile = (event: any) => {
@@ -70,18 +69,13 @@ const FillDescriptionJobPage: NextPage = () => {
       return;
     }
     setFiles([...files, ...filesArray]);
-    console.log(filesArray);
   };
 
   const onPostJob = handleSubmit(async (data) => {
     setIsLoading(true);
     if (!data) return;
     let submitedData = data;
-    console.log(
-      "submitedData.category",
-      typeof submitedData.category,
-      submitedData.category
-    );
+
     submitedData.category = JSON.parse(submitedData.category);
 
     if (files) {
@@ -91,18 +85,15 @@ const FillDescriptionJobPage: NextPage = () => {
         try {
           submitedData.pictureUrl = result;
           const response = await postJob(submitedData, cookies.token);
-          console.log(response);
           router.push(`${response.data._id}`);
         } catch (error) {
           console.error(error);
         }
       });
     }
-    console.log("submitedData", submitedData);
   });
 
   const deletePicture = (name: string) => {
-    console.log("h", name);
     setFiles(files.filter((file) => file.name !== name));
     filesCountRef.current -= 1;
   };
@@ -197,7 +188,7 @@ const FillDescriptionJobPage: NextPage = () => {
                     key={id}
                   >
                     <div
-                      className="absolute -right-1 -top-2 rounded-full p-0 m-0 cursor-pointer font-bold flex justify-center items-center text-red-500"
+                      className="absolute -right-2 -top-2 rounded-full w-5 h-5 bg-red-500 cursor-pointer font-bold flex justify-center items-center text-white text-xs"
                       onClick={() => deletePicture(file.name)}
                     >
                       X

@@ -65,7 +65,6 @@ const HistoryPage: NextPage = () => {
         totalPages: data.totalPages,
       });
     } catch (error) {
-      console.log(error);
     }
     setIsLoading(false);
   };

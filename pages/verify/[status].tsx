@@ -26,7 +26,6 @@ const VerifyPage = () => {
           },
         }
       );
-      console.log(response);
       alert(response.data.message);
     } catch (error: any) {
       alert(error.response.data.message);
@@ -37,7 +36,6 @@ const VerifyPage = () => {
     if (status === undefined) {
       return;
     }
-    console.log(status);
   }, [status]);
 
   if (status === "success") {

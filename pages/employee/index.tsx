@@ -10,7 +10,7 @@ import LoadingComponent from "../../components/LoadingComponent";
 import ReactSelect from "react-select";
 
 const sortOptions = [
-  { value: "birthday", label: "age" },
+  { value: "birthday", label: "birthday" },
   { value: "work", label: "work" },
   { value: "gender", label: "gender" },
 ];
@@ -31,7 +31,6 @@ function EmployeePage() {
   const [sortList, setSortList] = useState(["age", "status", "work", "gender"]);
 
   const fetchData = async () => {
-    console.log("query", query);
     setIsLoading(true);
     try {
       const { data } = await getAllEmployees(cookies.token, query);
@@ -95,7 +94,7 @@ function EmployeePage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {allEmployees.map((employee) => (
               <div
                 className="bg-white flex flex-col items-center rounded-md hover:shadow-lg cursor-pointer p-2"
@@ -117,7 +116,7 @@ function EmployeePage() {
                     )}
                   </div>
                 </div>
-                <div id="details" className="flex flex-col items-center">
+                <div id="details" className="flex flex-wrap items-center">
                   <span>
                     {employee.firstname} {employee.lastname}
                   </span>

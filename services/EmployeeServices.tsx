@@ -12,7 +12,6 @@ export const getAllEmployees = async (
       headers: headersParams(token),
     }
   );
-  console.log("getAllEmployees", response);
   return response;
 };
 
@@ -26,7 +25,6 @@ export const getEmployee = async (
       headers: headersParams(token),
     }
   );
-  console.log("getEmployee", response);
   return response;
 };
 
@@ -40,7 +38,6 @@ export const deleteEmployee = async (
       headers: headersParams(token),
     }
   );
-  console.log("deleteEmployee", response);
   return response;
 };
 
@@ -52,7 +49,6 @@ export const postEmployee = async (data: {}, token: string) => {
       headers: headersParams(token),
     }
   );
-  console.log("postEmployee", response);
   return response;
 };
 
@@ -68,6 +64,5 @@ export const editEmployee = async (
       headers: headersParams(token),
     }
   );
-  console.log("postEmployee", response);
   return response;
 };

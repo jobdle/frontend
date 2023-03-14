@@ -39,7 +39,7 @@ function UserProvider({ children }: UserProviderProps) {
       );
       setUserData(res.data);
     } catch (err) {
-      router.push("/signin");
+      router.push("/signout");
     }
     setIsLoading(false);
   };

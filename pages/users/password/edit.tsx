@@ -27,7 +27,6 @@ const RecoverPasswordPage = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    console.log(data.newPassword, data.comfirmNewPassword);
 
     if (data.newPassword === data.comfirmNewPassword) {
       try {
@@ -35,7 +34,6 @@ const RecoverPasswordPage = () => {
           data.comfirmNewPassword,
           reset_password_token
         );
-        console.log(response);
         alert(response.data.message);
         router.push("/signin");
       } catch (error) {
