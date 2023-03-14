@@ -99,8 +99,11 @@ const Sidebar: NextPage = () => {
       {/* <!-- mobile menu bar --> */}
       <div className="relative inset-x-0 bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-between md:hidden text-white z-30">
         {/* <!-- logo --> */}
-        <Link href="/" className="p-4 font-bold" />
-        {userData.firstname} {userData.lastname}
+        <Link href="/" className="p-4 font-bold">
+          <p>
+            {userData.firstname} {userData.lastname}
+          </p>
+        </Link>
         {/* <!-- mobile menu button --> */}
         <button
           className="p-4 focus:outline-none"

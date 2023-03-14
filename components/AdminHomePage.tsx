@@ -112,7 +112,7 @@ const AdminTable = () => {
   };
 
   useEffect(() => {
-    // if (!status) return;
+    if (!status) return;
     fetchData();
   }, [state.page, status, query]);
 
