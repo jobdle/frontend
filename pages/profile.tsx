@@ -41,7 +41,6 @@ const ProfilePage = () => {
 
   useEffect(() => {
     setProfileDataObject(userData || defaultUser);
-    console.log(userData);
   }, [userData]);
 
   const handleMouseEnter = () => {
@@ -65,8 +64,6 @@ const ProfilePage = () => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-    console.log(data.newPassword, data.comfirmNewPassword,data.oldPassword);
     if (data.newPassword === data.comfirmNewPassword) {
       try {
         const response = await changePassword(
@@ -74,7 +71,6 @@ const ProfilePage = () => {
           data.comfirmNewPassword,
           cookies.token,
         );
-        console.log(response);
         alert(response.data.message);
         reset();
       } catch (error:any) {

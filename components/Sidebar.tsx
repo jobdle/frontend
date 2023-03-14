@@ -25,7 +25,6 @@ const Sidebar: NextPage = () => {
   const router = useRouter();
   const { userData } = useUser();
   // const [sidebar, setSidebar] = useSidebar();
-  // console.log("sidebarData", sidebar);
 
   const [state, setState] = useState<State>({
     firstname: "",
@@ -135,6 +134,18 @@ const Sidebar: NextPage = () => {
             </div>
           );
         })}
+        {/* Log out button */}
+        <div
+          onClick={() => setShowSignOutMoDal(true)}
+          className={`${
+            open.Sidebar ? "flex items-center space-x-3" : "flex justify-center"
+          } p-1 mx-2 mb-2 rounded-md font-medium bg-red-500 hover:bg-red-100 hover:text-red-500 cursor-pointer duration-100 text-white bottom-0`}
+        >
+          <ArrowRightOnRectangleIcon className="w-5 h-5" />
+          <span className={`${open.Sidebar ? "" : "hidden"}`}>
+            <p>Log out</p>
+          </span>
+        </div>
       </div>
 
       {/* Sidebar */}
@@ -148,7 +159,7 @@ const Sidebar: NextPage = () => {
             } font-bold text-white`}
           >
             <span className="cursor-pointer" onClick={clickOnLogo}>
-            {process.env.NEXT_PUBLIC_APP_NAME}
+              {process.env.NEXT_PUBLIC_APP_NAME}
             </span>
           </div>
         </div>

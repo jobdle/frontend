@@ -47,7 +47,6 @@ const ChatPage: NextPage = () => {
   const [isclickChatOnMoblie, setIsclickChatOnMoblie] = useState(false);
 
   const getRoom = async (token: string) => {
-    console.log("IN getRoom search", search);
     try {
       let searchUrl = "";
       if (!!search) {
@@ -62,7 +61,6 @@ const ChatPage: NextPage = () => {
           },
         }
       );
-      console.log("getRoom", response);
       return response.data;
     } catch (error: any) {
       console.error(error);
@@ -81,7 +79,6 @@ const ChatPage: NextPage = () => {
           },
         }
       );
-      console.log("getUserData", response);
       return response.data;
     } catch (err) {
       console.error(err);
@@ -114,13 +111,11 @@ const ChatPage: NextPage = () => {
           // ADMIN CHAT
           setChatRoomsObjectsArray(chatRoomsObjectsArray);
           if (roomId === undefined) {
-            console.log("NOT HAVE ROOM ID:", roomId);
             setRoomId(chatRoomsObjectsArray[0]._id);
             setRoomName(chatRoomsObjectsArray[0].nameOfUser);
             setMessageList(chatRoomsObjectsArray[0].messages);
             refMessages.current = chatRoomsObjectsArray[0].messages;
           } else {
-            console.log("HAVE ROOM ID:", roomId);
             let selected = chatRoomsObjectsArray.find(
               (room: any) => room._id === roomId
             );
@@ -157,16 +152,12 @@ const ChatPage: NextPage = () => {
 
   useEffect(() => {
     if (userData && userData.role === "admin") {
-      console.log("arrivalRoomId", arrivalRoomId);
-      console.log("roomId", roomId);
-      // console.log(chatRoomsObjectsArray);
       let chatOnTop = chatRoomsObjectsArray.find(
         (room) => arrivalRoomId === room._id
       );
       let remainChat = chatRoomsObjectsArray.filter(
         (room) => arrivalRoomId !== room._id
       );
-      console.log("chatOnTop,remainChat", chatOnTop, remainChat);
       if (chatOnTop && remainChat) {
         setChatRoomsObjectsArray([chatOnTop, ...remainChat]);
       }
@@ -175,7 +166,6 @@ const ChatPage: NextPage = () => {
         // refMessages.current = messageList;
         setMessageList(refMessages.current);
       }
-      // console.log("ref changed to", refMessages.current);
     } else {
       setMessageList(refMessages.current);
     }
@@ -200,11 +190,8 @@ const ChatPage: NextPage = () => {
         })
       );
     } else {
-      socket.on("connect", () => {
-        console.log("SOCKET is already connected");
-      });
+      socket.on("connect", () => {});
       socket.on("message", async (data: any) => {
-        console.log("GOT MESSAGE");
         // setMessageList([...refMessages.current, data.content]);
         refMessages.current = [...refMessages.current, data.content];
         setArrivalRoomId(data.roomId);
@@ -221,7 +208,6 @@ const ChatPage: NextPage = () => {
         socket.emit("joinroom", chatroom._id)
       );
 
-    console.log("ROOMID:", roomId);
     if (roomId && socket !== null) {
       socket.emit("joinroom", roomId);
     }
@@ -249,7 +235,6 @@ const ChatPage: NextPage = () => {
 
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("sendMessage");
     if (socket !== null && userData) {
       if (message === "") return;
       let messageContent = {
@@ -262,7 +247,6 @@ const ChatPage: NextPage = () => {
           timeStamp: new Date(),
         },
       };
-      // console.log(socket.connected)
       socket.emit("message", messageContent);
       // setChkMessage(true)
       // setMessageList([...messageList, messageContent.content]);
@@ -276,11 +260,9 @@ const ChatPage: NextPage = () => {
 
   const handleSubmitFile = async (event: any) => {
     // setFileImage(event.target.files[0]);
-    console.log("handleSubmitFile");
     handleUpload(event.target.files[0])
       .then((ImageUrl) => {
         refFile.current.value = "";
-        console.log(ImageUrl);
         if (socket !== null && userData) {
           if (!ImageUrl) return;
           let messageContent = {
@@ -293,7 +275,6 @@ const ChatPage: NextPage = () => {
               timeStamp: new Date(),
             },
           };
-          // console.log(socket.connected)
           socket.emit("message", messageContent);
           // setChkMessage(true)
           // setMessageList([...messageList, messageContent.content]);
@@ -397,7 +378,7 @@ const ChatPage: NextPage = () => {
       {/* Chat Message Content  */}
       <div
         className={`${
-          isclickChatOnMoblie ? "z-10" : "z-0"
+          userData.role == "user" || isclickChatOnMoblie ? "z-10" : "z-0"
         } w-full flex flex-col md:w-9/12 justify-between bg-white border-l border-gray-200 h-[90vh] absolute md:static`}
       >
         {/* Chat title */}

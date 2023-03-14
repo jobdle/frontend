@@ -8,7 +8,6 @@ const ButtonComponent = ({
   type,
   isLoading,
 }: any) => {
-  // console.log(props);
   return (
     <button
       className={className}

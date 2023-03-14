@@ -8,7 +8,6 @@ export const getAllCategories = async (token: string) => {
       headers: headersParams(token),
     }
   );
-  console.log("getAllCategories", response);
   return response;
 };
 
@@ -20,7 +19,6 @@ export const postCategory = async (data: {}, token: string) => {
       headers: headersParams(token),
     }
   );
-  console.log("postCategory", response);
   return response;
 };
 
@@ -34,6 +32,5 @@ export const deleteCategory = async (
       headers: headersParams(token),
     }
   );
-  console.log("deleteCategory", response);
   return response;
 };

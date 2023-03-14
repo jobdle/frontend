@@ -28,19 +28,16 @@ export const splitTFromISO = (dateString: string) => {
 
 export const handleUpload = async (file: File) => {
   try {
-  // if (!file) {
-  //   alert("Please choose a file first!");
-  //   return;
-  // }
-    console.log(file);
+    // if (!file) {
+    //   alert("Please choose a file first!");
+    //   return;
+    // }
     const storageRef = ref(storage, `/files/${file.name}`);
     const snapshot = await uploadBytes(storageRef, await file.arrayBuffer());
     const downloadUrl = await getDownloadURL(snapshot.ref);
 
     return downloadUrl;
-  } catch(err) {
-    console.log(err)
-  }
+  } catch (err) {}
   // uploadTask.on(
   //   "state_changed",
   //   (snapshot) => {
@@ -50,11 +47,10 @@ export const handleUpload = async (file: File) => {
   //     // update progress
   //     // setPercent(percent);
   //   },
-  //   (err) => console.log("err", err),
+  //   (err) => {},
   //   async () => {
   //     // download url
   //     const url = await getDownloadURL(uploadTask.snapshot.ref);
-  //     console.log("url", url);
   //     return url;
   //   }
   // );

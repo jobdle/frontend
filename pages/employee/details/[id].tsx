@@ -117,9 +117,19 @@ const EmployeedetailsPage = () => {
           <div className="sm:grid sm:grid-cols-4 py-1">
             <p className="font-bold col-span-1">Works </p>
             <div className="w-full sm:col-span-3">
-              {employeeDetailsObject.works.map((work: any) => (
-                <div className="border rounded-md w-full sm:col-span-3">{work.title}</div>
-              ))}
+              {employeeDetailsObject.works.map((work: Job, id: number) => {
+                return (
+                  <div
+                    className="rounded-md w-full sm:col-span-3 px-2 shadow"
+                    onClick={() => {
+                      router.push(`/job/details/${work.workId}`);
+                    }}
+                    key={id}
+                  >
+                    {work.title}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

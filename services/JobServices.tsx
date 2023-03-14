@@ -18,7 +18,6 @@ export const getAllJobs = async (
       headers: headersParams(token),
     }
   );
-  console.log("getAllJob", response);
   return response;
 };
 
@@ -36,7 +35,6 @@ export const getAllAccomplishedJobs = async (
       headers: headersParams(token),
     }
   );
-  console.log("getAllCompletedJobs", response);
   return response;
 };
 
@@ -55,7 +53,6 @@ export const getUserJobs = async (
       headers: headersParams(token),
     }
   );
-  console.log("getUserJobs", response);
   return response;
 };
 
@@ -66,7 +63,6 @@ export const getJob = async (id: any, token: string) => {
       headers: headersParams(token),
     }
   );
-  console.log("getJob", response);
   return response;
 };
 
@@ -82,7 +78,6 @@ export const editJob = async (
       headers: headersParams(token),
     }
   );
-  console.log("editJob", response);
   return response;
 };
 
@@ -96,12 +91,10 @@ export const deleteJob = async (
       headers: headersParams(token),
     }
   );
-  console.log("deleteJob", response);
   return response;
 };
 
 export const postJob = async (data: JobEditable, token: string) => {
-  console.log("data in postJob", data);
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/work`,
     data,
@@ -109,7 +102,6 @@ export const postJob = async (data: JobEditable, token: string) => {
       headers: headersParams(token),
     }
   );
-  console.log("postJob", response);
   return response;
 };
 
@@ -125,7 +117,6 @@ export const manageJob = async (
       headers: headersParams(token),
     }
   );
-  console.log("postJob", response);
   return response;
 };
 
@@ -136,6 +127,5 @@ export const getJobForCalendar = async (token: string) => {
       headers: headersParams(token),
     }
   );
-  console.log("getJobForCalendar", response);
   return response;
 };

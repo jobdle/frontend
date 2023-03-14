@@ -11,7 +11,6 @@ export const getUserData = async (token: string) => {
       },
     }
   );
-  console.log("getUserData", response);
   return response;
 };
 

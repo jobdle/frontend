@@ -56,7 +56,6 @@ const EditDescriptionJobPage: NextPage = () => {
       return;
     }
     setFiles([...files, ...filesArray]);
-    console.log(filesArray);
   };
 
   // const handleSelectChange = (myStringifyObject: string) => {
@@ -69,7 +68,6 @@ const EditDescriptionJobPage: NextPage = () => {
   // };
 
   const onEditjob = handleSubmit(async (data: JobEditable) => {
-    console.log(data);
     if (!id) return;
     await editJob(id, { ...data, employee: employees }, cookies.token);
     router.push(`/job/details/${id}`);
@@ -88,7 +86,6 @@ const EditDescriptionJobPage: NextPage = () => {
   };
 
   const deletePicture = (name: string) => {
-    console.log("h", name);
     setFiles(files.filter((file) => file.name !== name));
     filesCountRef.current -= 1;
   };
@@ -153,6 +150,19 @@ const EditDescriptionJobPage: NextPage = () => {
             </div>
           </div>
           <div className={BlockFieldStyles}>
+            <p className={LabelStyles}>Wage </p>
+            <input
+              type="text"
+              className={InputFieldStyles}
+              {...register("category.minWage", {
+                required: "This is required.",
+              })}
+              // name="location"
+              // onChange={handleChange}
+              required
+            />
+          </div>
+          <div className={BlockFieldStyles}>
             <p className={LabelStyles}>Location </p>
             <input
               type="text"
@@ -189,7 +199,6 @@ const EditDescriptionJobPage: NextPage = () => {
             <div className="col-span-4">
               <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-1">
                 {employees.map((employee) => {
-                  console.log(employee);
                   return (
                     <div
                       className="border bg-white flex flex-col items-center rounded-md hover:shadow-lg cursor-pointer p-2 col-span-1"
@@ -237,7 +246,7 @@ const EditDescriptionJobPage: NextPage = () => {
                     key={id}
                   >
                     <div
-                      className="absolute -right-1 -top-2 rounded-full p-0 m-0 cursor-pointer font-bold flex justify-center items-center text-red-500"
+                      className="absolute -right-2 -top-2 rounded-full w-5 h-5 bg-red-500 cursor-pointer font-bold flex justify-center items-center text-white text-xs"
                       onClick={() => deletePicture(file)}
                     >
                       X

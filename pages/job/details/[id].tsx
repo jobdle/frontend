@@ -63,7 +63,6 @@ const JobDetailsPage: NextPage = () => {
   const handleSuccussJob = async () => {
     try {
       const response = await editJob(id, { status: "done" }, cookies.token);
-      console.log(response);
       router.push("/");
     } catch (err) {
       console.error(err);
@@ -108,7 +107,7 @@ const JobDetailsPage: NextPage = () => {
           </p>
         </div>
         <div className={BlockFieldStyles}>
-          <p className={LabelStyles}>Min wage </p>
+          <p className={LabelStyles}>Wage </p>
           <p className={DetailStyles}>{jobDetailsObject.category.minWage} </p>
         </div>
         <div className={BlockFieldStyles}>
@@ -168,6 +167,7 @@ const JobDetailsPage: NextPage = () => {
                 style={{
                   backgroundImage: `url(${url})`,
                 }}
+                key={url}
               ></div>
             ))}
           </div>

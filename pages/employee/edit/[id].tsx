@@ -97,13 +97,11 @@ const EmployeedetailsPage = () => {
   //       console.error(error);
   //     }
   //   }
-  //   console.log("submitedData", submitedData);
   //   await editEmployee(id, submitedData, cookies.token);
   //   router.push(`/employee/details/${id}`);
   // };
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     setIsLoading(true);
     let submitedData = data;
     if (!submitedData) return;
@@ -115,10 +113,8 @@ const EmployeedetailsPage = () => {
         console.error(error);
       }
     }
-    console.log("submitedData", submitedData);
     try {
       const response = await editEmployee(id, submitedData, cookies.token);
-      console.log(response);
       router.push(`/employee/details/${id}`);
     } catch (error) {
       console.error(error);
@@ -257,7 +253,6 @@ const EmployeedetailsPage = () => {
                       render={({ field: { onChange } }) => (
                         <ReactSelect
                           onChange={(option: any) => {
-                            console.log(option);
                             onChange(option.value);
                           }}
                           options={genderListOptions}

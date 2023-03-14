@@ -47,7 +47,6 @@ export default function ManageEmployeeModal({
   }, [show, query]);
 
   const fetchData = async () => {
-    console.log("query", query);
     const response = await getAllEmployees(cookies.token, query); // error must have query
     setAllEmployees(response.data);
     getAllCategories(cookies.token).then((res) => {
@@ -65,15 +64,14 @@ export default function ManageEmployeeModal({
     const selectedEmployees: Employee[] = selectedEmployeeArray.map(
       (index) => allEmployees[index]
     );
-    console.log("SelectedEmployees", selectedEmployees);
-    console.log("id", id);
+
     try {
       const response = await manageJob(
         id,
         { employee: selectedEmployees, status: "pending" },
         token
       );
-      console.log(response);
+
       router.push("/");
     } catch (error) {
       console.error(error);

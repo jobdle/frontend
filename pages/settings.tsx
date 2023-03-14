@@ -30,7 +30,6 @@ const SettingPage = () => {
 
   const handleSubmitAddCategory = async (e: any) => {
     e.preventDefault();
-    console.log("CategoryObjectInput", categoryObjectInput);
     const trimedNameInput = categoryObjectInput.name.trim(); // Use Regex
     if (trimedNameInput) {
       postCategory(

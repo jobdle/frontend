@@ -23,7 +23,6 @@ const IdentifyPage = () => {
     } catch (error: any) {
       alert(error.response.data.message);
     }
-    console.log(userEmail);
     setIsLoading(false);
   };
 
