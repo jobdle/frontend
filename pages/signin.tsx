@@ -129,7 +129,7 @@ const SignInPage: SignInPageWithNoLayout = () => {
               >
                 Login
               </ButtonComponent>
-              <a href={signinWithKasetsart.baseUrl} className="w-full">
+              {/* <a href={signinWithKasetsart.baseUrl} className="w-full">
                 <ButtonComponent
                   className="border border-transparent rounded-full bg-green-600 w-full py-2 px-4 text-sm font-medium text-white"
                   type="button"
@@ -137,7 +137,7 @@ const SignInPage: SignInPageWithNoLayout = () => {
                 >
                   Sign up with Kasetsart
                 </ButtonComponent>
-              </a>
+              </a> */}
             </div>
           </form>
           <div className="flex justify-center my-5">

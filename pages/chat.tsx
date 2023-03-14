@@ -494,7 +494,7 @@ const ChatPage: NextPage = () => {
                         : ""
                     } flex text-gray-400 text-xs`}
                   >
-                    {new Date(message.timeStamp).toString().substring(17, 21)}
+                    {new Date(message.timeStamp).toString().substring(16, 21)}
                   </div>
                 </div>
               );
