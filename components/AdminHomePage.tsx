@@ -266,7 +266,7 @@ const AdminTable = () => {
               <Select
                 options={sortListOptions}
                 defaultValue={sortListOptions[0]}
-                onChange={(option) =>
+                onChange={(option: any) =>
                   setQuery({ ...query, sort: option.value })
                 }
               />
@@ -276,7 +276,7 @@ const AdminTable = () => {
               <Select
                 options={OrderListOptions}
                 defaultValue={OrderListOptions[0]}
-                onChange={(option) =>
+                onChange={(option: any) =>
                   setQuery({ ...query, order: option.value })
                 }
               />
