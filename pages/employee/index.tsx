@@ -11,7 +11,7 @@ import ReactSelect from "react-select";
 
 const sortOptions = [
   { value: "birthday", label: "birthday" },
-  { value: "work", label: "work" },
+  { value: "works", label: "works" },
   { value: "gender", label: "gender" },
 ];
 
@@ -28,7 +28,7 @@ function EmployeePage() {
   const [allEmployees, setAllEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState({});
-  const [sortList, setSortList] = useState(["age", "status", "work", "gender"]);
+  const [sortList, setSortList] = useState(["age", "status", "works", "gender"]);
 
   const fetchData = async () => {
     setIsLoading(true);
