@@ -2,9 +2,11 @@ You can follow this step for using our.
 
 # 1."git clone https://github.com/jobdle/frontend.git" for clone code from github
 
-# 2."yarn" for install all module
+# 2."cd ./frontend" go to folder frontend
 
-# 3.create .env file
+# 3."yarn" for install all module
+
+# 4.create .env file
 
 Create a .env file in the root of your project and insert your key/value pairs in the following format of KEY=VALUE:
 
@@ -18,4 +20,4 @@ Create a .env file in the root of your project and insert your key/value pairs i
 | FIREBASE_APP_ID                  | APP_ID of firebase                                                                            |
 | NEXT_PUBLIC_APP_NAME                  | APP_NAME of firebase                                                               |
 
-# 4.Run project by "yarn dev"
+# 5.Run project by "yarn dev"
