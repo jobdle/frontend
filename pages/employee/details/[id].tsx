@@ -7,7 +7,7 @@ import {
   deleteEmployee,
   getEmployee,
 } from "../../../services/EmployeeServices";
-import ComfirmModal from "../../../components/SuccessJobModal";
+import DeleteEmployeeModal from "../../../components/DeleteEmployeeModal";
 import Header from "../../../components/Header";
 import { dateFormat } from "../../../services/UtilsServices";
 import { PhotoIcon } from "@heroicons/react/24/outline";
@@ -151,15 +151,11 @@ const EmployeedetailsPage = () => {
         </div>
       ) : null}
 
-      <ComfirmModal
+      <DeleteEmployeeModal
         onClose={setShowDeleteEmployeeModal}
         show={showDeleteEmployeeModal}
         cancel={() => setShowDeleteEmployeeModal(false)}
         confirm={handleDeleteEmployee}
-        title="Are you sure you delete this employee ?"
-        cancelButtonValue="Cancel"
-        confirmButtonValue="Confirm"
-        confirmButtonColor="red"
       />
     </>
   );
